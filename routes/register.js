@@ -1,16 +1,15 @@
 const express = require("express");
 const router = express.Router();
 
-<<<<<<< HEAD
 let myPassword = "lq2p0J8h";
 let myDatabase = "fullStack7";
 
 router.post("/", function (req, res) {
   const { name, password } = req.body;
-=======
+
 router.post("/", async function (req, res) {
   const { name, password, email, phone } = req.body;
->>>>>>> ea365c0e36b36b81718ea3f93802f9e1530ac2de
+
 
   if (!name || !password) {
     res.status(400).send("Missing name or password");

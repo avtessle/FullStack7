@@ -1,11 +1,7 @@
-<<<<<<< HEAD
-const mysql = require('mysql2');
-=======
-let mysql = require("mysql2");
-let myPassword = "avigayiltess";
-let myDatabase = "fullStack7";
->>>>>>> ea365c0e36b36b81718ea3f93802f9e1530ac2de
 
+const mysql = require('mysql2');
+
+let mysql = require("mysql2");
 const myPassword = "lq2p0J8h";
 const myDatabase = "fullStack7";
 
@@ -13,11 +9,6 @@ const con = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: myPassword,
-<<<<<<< HEAD
-  database :"fullStack7"
-});
-
-=======
 
   //comment in first run
   //database:myDatabase
@@ -33,19 +24,12 @@ con.connect(function (err) {
   });
 });
 
->>>>>>> ea365c0e36b36b81718ea3f93802f9e1530ac2de
 function createTable(createTableQuery, data, type) {
   const insertQuery = `INSERT INTO ${type} VALUES ?`;
 
   const keys = Object.keys(data[0]);
   const dataValues = data.map((item) => keys.map((key) => item[key]));
 
-<<<<<<< HEAD
-  con.query(createTableQuery, (err, results) => {
-    if (err) throw err;
-    console.log(`${type} table created successfully`);
-    
-=======
   con.connect(function (err) {
     if (err) throw err;
     console.log("Connected!");
@@ -54,16 +38,12 @@ function createTable(createTableQuery, data, type) {
       console.log(`${type} table created successfully`);
     });
 
->>>>>>> ea365c0e36b36b81718ea3f93802f9e1530ac2de
     con.query(insertQuery, [dataValues], (err, results) => {
       if (err) throw err;
       console.log(`${type} Users data inserted successfully`);
     });
-<<<<<<< HEAD
-=======
 
     con.end();
->>>>>>> ea365c0e36b36b81718ea3f93802f9e1530ac2de
   });
 }
 
@@ -170,28 +150,7 @@ const soldProductsData = [
   },
 ];
 
-<<<<<<< HEAD
-con.connect(function (err) {
-  if (err) throw err;
-  console.log("Connected!");
-
-  con.query(`CREATE DATABASE IF NOT EXISTS ${myDatabase}`, function (err, result) {
-    if (err) throw err;
-    console.log("Database created");
-
-    // After the database is created, call the createTable function for each table
-    //createTable(createUsersTableQuery, usersData, "users");
-    //createTable(createPasswordsTableQuery, passwordsData, "passwords");
-    //createTable(createProductsTableQuery, productsData, "products");
-    createTable(createSoldProductsTableQuery, soldProductsData, "sold_products");
-
-    // Finally, close the connection after all operations are finished
-    con.end();
-  });
-});
-=======
 createTable(createUsersTableQuery, usersData, "passwords");
 createTable(createPasswordsTableQuery, passwordsData, "passwords");
 createTable(createProductsTableQuery, productsData, "products");
 createTable(createSoldProductsTableQuery, soldProductsData, "sold_products");
->>>>>>> ea365c0e36b36b81718ea3f93802f9e1530ac2de
