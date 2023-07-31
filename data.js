@@ -1,47 +1,29 @@
-let mysql = require('mysql2');
-let myPassword= "avigayiltess";
-let myDatabase="fullStack7";
+const mysql = require('mysql2');
 
-var con = mysql.createConnection({
+const myPassword = "lq2p0J8h";
+const myDatabase = "fullStack7";
+
+const con = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: myPassword,
-
-  //comment in first run
-  //database:myDatabase 
+  database :"fullStack7"
 });
 
-//comment after first run
-con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
-  con.query(`CREATE DATABASE ${myDatabase}`, function (err, result) {
-    if (err) throw err;
-    console.log("Database created");
-  });
-});
-
-function createTable(createTableQuery, data, type){
-  
+function createTable(createTableQuery, data, type) {
   const insertQuery = `INSERT INTO ${type} VALUES ?`;
 
   const keys = Object.keys(data[0]);
   const dataValues = data.map((item) => keys.map((key) => item[key]));
-  
-  con.connect(function(err) {
+
+  con.query(createTableQuery, (err, results) => {
     if (err) throw err;
-    console.log("Connected!");
-    con.query(createTableQuery, (err, results) => {
-      if (err)throw err
-      console.log(`${type} table created successfully`);    
-    });
-  
-    con.query(insertQuery, [dataValues], (err, results) => {
-    if (err)throw err
-    console.log(`${type} Users data inserted successfully`);  
-    }); 
+    console.log(`${type} table created successfully`);
     
-    con.end();
+    con.query(insertQuery, [dataValues], (err, results) => {
+      if (err) throw err;
+      console.log(`${type} Users data inserted successfully`);
+    });
   });
 }
 
@@ -54,7 +36,7 @@ CREATE TABLE IF NOT EXISTS users (
   status VARCHAR(255) NOT NULL
 );`;
 
-const usersData=[
+const usersData = [
   {
     "id": 1,
     "name": "Leanne Graham",
@@ -85,7 +67,7 @@ CREATE TABLE IF NOT EXISTS passwords (
   password VARCHAR(255) NOT NULL
 );`;
 
-const passwordsData=[
+const passwordsData = [
   {
     "id": 1,
     "name": "Leanne Graham",
@@ -112,7 +94,7 @@ CREATE TABLE IF NOT EXISTS products (
   quantity INT
 );`;
 
-const productsData=[
+const productsData = [
   {
     "id": 1,
     "category": "necklace",
@@ -138,7 +120,7 @@ CREATE TABLE IF NOT EXISTS sold_products (
   quantity INT
 );`;
 
-const soldProductsData=[
+const soldProductsData = [
   {
     "id": 1,
     "productId": "1",
@@ -148,7 +130,21 @@ const soldProductsData=[
   }
 ];
 
-createTable(createUsersTableQuery, usersData, "passwords");
-createTable(createPasswordsTableQuery, passwordsData, "passwords");
-createTable(createProductsTableQuery, productsData, "products");
-createTable(createSoldProductsTableQuery, soldProductsData, "sold_products");
+con.connect(function (err) {
+  if (err) throw err;
+  console.log("Connected!");
+
+  con.query(`CREATE DATABASE IF NOT EXISTS ${myDatabase}`, function (err, result) {
+    if (err) throw err;
+    console.log("Database created");
+
+    // After the database is created, call the createTable function for each table
+    //createTable(createUsersTableQuery, usersData, "users");
+    //createTable(createPasswordsTableQuery, passwordsData, "passwords");
+    //createTable(createProductsTableQuery, productsData, "products");
+    createTable(createSoldProductsTableQuery, soldProductsData, "sold_products");
+
+    // Finally, close the connection after all operations are finished
+    con.end();
+  });
+});

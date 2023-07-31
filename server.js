@@ -13,6 +13,6 @@ app.use("/login", loginRouter);
 app.use("/register", loginRouter);
 app.use("/store", storeRouter);
 
-app.listen(3000, () => {
+app.listen(3001, () => {
   console.log("Server is running on port 3000");
 });
