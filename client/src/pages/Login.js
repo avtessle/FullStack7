@@ -16,6 +16,7 @@ function Login({ setCurrentName }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !password) {
+      alert("Missing name or password");
       return;
     }
 

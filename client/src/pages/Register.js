@@ -6,12 +6,14 @@ import styles from "./Login.module.css";
 function Register({ setCurrentName }) {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !password) {
+      alert("Missing name or password");
       return;
     }
 
@@ -21,7 +23,7 @@ function Register({ setCurrentName }) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, password }),
+      body: JSON.stringify({ name, password, phone, email }),
     };
 
     fetch(url, requestOptions)
@@ -35,7 +37,7 @@ function Register({ setCurrentName }) {
       .then((user) => {
         localStorage.setItem("currentUser", JSON.stringify(user));
         setCurrentName(name);
-        navigate(`/users/${name}/info`);
+        navigate(`/store`);
       })
       .catch((error) => {
         console.error(error);
@@ -65,6 +67,26 @@ function Register({ setCurrentName }) {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div className={styles["form-row"]}>
+          <input
+            type="phone"
+            placeholder="Phone"
+            className={styles["form-input"]}
+            id="phone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+        </div>
+        <div className={styles["form-row"]}>
+          <input
+            type="email"
+            placeholder="Email"
+            className={styles["form-input"]}
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <button type="submit" className={styles.btn}>

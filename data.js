@@ -1,6 +1,6 @@
-let mysql = require('mysql2');
-let myPassword= "avigayiltess";
-let myDatabase="fullStack7";
+let mysql = require("mysql2");
+let myPassword = "avigayiltess";
+let myDatabase = "fullStack7";
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -8,11 +8,11 @@ var con = mysql.createConnection({
   password: myPassword,
 
   //comment in first run
-  //database:myDatabase 
+  //database:myDatabase
 });
 
 //comment after first run
-con.connect(function(err) {
+con.connect(function (err) {
   if (err) throw err;
   console.log("Connected!");
   con.query(`CREATE DATABASE ${myDatabase}`, function (err, result) {
@@ -21,26 +21,25 @@ con.connect(function(err) {
   });
 });
 
-function createTable(createTableQuery, data, type){
-  
+function createTable(createTableQuery, data, type) {
   const insertQuery = `INSERT INTO ${type} VALUES ?`;
 
   const keys = Object.keys(data[0]);
   const dataValues = data.map((item) => keys.map((key) => item[key]));
-  
-  con.connect(function(err) {
+
+  con.connect(function (err) {
     if (err) throw err;
     console.log("Connected!");
     con.query(createTableQuery, (err, results) => {
-      if (err)throw err
-      console.log(`${type} table created successfully`);    
+      if (err) throw err;
+      console.log(`${type} table created successfully`);
     });
-  
+
     con.query(insertQuery, [dataValues], (err, results) => {
-    if (err)throw err
-    console.log(`${type} Users data inserted successfully`);  
-    }); 
-    
+      if (err) throw err;
+      console.log(`${type} Users data inserted successfully`);
+    });
+
     con.end();
   });
 }
@@ -48,59 +47,59 @@ function createTable(createTableQuery, data, type){
 const createUsersTableQuery = `
 CREATE TABLE IF NOT EXISTS users (
   id INT PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL UNIQUE,
   email VARCHAR(255) NOT NULL,
   phone VARCHAR(255) NOT NULL,
   status VARCHAR(255) NOT NULL
 );`;
 
-const usersData=[
+const usersData = [
   {
-    "id": 1,
-    "name": "Leanne Graham",
-    "email": "Sincere@april.biz",
-    "phone": "1-770-736-8031 x56442",
-    "status": "admin",
+    id: 1,
+    name: "Leanne Graham",
+    email: "Sincere@april.biz",
+    phone: "1-770-736-8031 x56442",
+    status: "admin",
   },
   {
-    "id": 2,
-    "name": "Ervin Howell",
-    "email": "Shanna@melissa.tv",
-    "phone": "010-692-6593 x09125",
-    "status": "customer",
+    id: 2,
+    name: "Ervin Howell",
+    email: "Shanna@melissa.tv",
+    phone: "010-692-6593 x09125",
+    status: "customer",
   },
   {
-    "id": 3,
-    "name": "Clementine Bauch",
-    "email": "Nathan@yesenia.net",
-    "phone": "1-463-123-4447",
-    "status": "customer",
-  }
+    id: 3,
+    name: "Clementine Bauch",
+    email: "Nathan@yesenia.net",
+    phone: "1-463-123-4447",
+    status: "customer",
+  },
 ];
 
 const createPasswordsTableQuery = `
 CREATE TABLE IF NOT EXISTS passwords (
-  id INT PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  password VARCHAR(255) NOT NULL
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL UNIQUE
 );`;
 
-const passwordsData=[
+const passwordsData = [
   {
-    "id": 1,
-    "name": "Leanne Graham",
-    "password": "111",
+    id: 1,
+    name: "Leanne Graham",
+    password: "111",
   },
   {
-    "id": 2,
-    "name": "Ervin Howell",
-    "password": "222",
+    id: 2,
+    name: "Ervin Howell",
+    password: "222",
   },
   {
-    "id": 3,
-    "name": "Clementine Bauch",
-    "password": "333",
-  }
+    id: 3,
+    name: "Clementine Bauch",
+    password: "333",
+  },
 ];
 
 const createProductsTableQuery = `
@@ -112,21 +111,21 @@ CREATE TABLE IF NOT EXISTS products (
   quantity INT
 );`;
 
-const productsData=[
+const productsData = [
   {
-    "id": 1,
-    "category": "necklace",
-    "description": "silver necklace",
-    "price": 100,
-    "quantity": 2,
+    id: 1,
+    category: "necklace",
+    description: "silver necklace",
+    price: 100,
+    quantity: 2,
   },
   {
-    "id": 2,
-    "category": "necklace",
-    "description": "gold necklace",
-    "price": 200,
-    "quantity": 2,
-  }
+    id: 2,
+    category: "necklace",
+    description: "gold necklace",
+    price: 200,
+    quantity: 2,
+  },
 ];
 
 const createSoldProductsTableQuery = `
@@ -138,14 +137,14 @@ CREATE TABLE IF NOT EXISTS sold_products (
   quantity INT
 );`;
 
-const soldProductsData=[
+const soldProductsData = [
   {
-    "id": 1,
-    "productId": "1",
-    "userId": "1",
-    "date": "2023-07-24",
-    "quantity": 1,
-  }
+    id: 1,
+    productId: "1",
+    userId: "1",
+    date: "2023-07-24",
+    quantity: 1,
+  },
 ];
 
 createTable(createUsersTableQuery, usersData, "passwords");

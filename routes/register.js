@@ -1,54 +1,44 @@
 const express = require("express");
 const router = express.Router();
-const mysql = require("mysql2");
 
-let myPassword = "avigayiltess";
-let myDatabase = "fullStack7";
-
-router.post("/", function (req, res) {
-  const { name, password } = req.body;
+router.post("/", async function (req, res) {
+  const { name, password, email, phone } = req.body;
 
   if (!name || !password) {
     res.status(400).send("Missing name or password");
     return;
   }
-});
 
-function sqlConnect(query, values = []) {
-  return new Promise((resolve, reject) => {
-    const connection = mysql.createConnection({
-      host: "localhost",
-      user: "root",
-      password: myPassword,
-      database: myDatabase,
-    });
+  try {
+    // Insert data into the passwords table
+    let query = `INSERT IGNORE INTO passwords (name, password) VALUES (?, ?)`;
+    let values = [name, password];
+    let userId;
 
-    connection.connect((err) => {
-      if (err) {
-        console.error("Error connecting to MySQL server: " + err.stack);
-        reject(err);
-        return;
+    const passwordResults = await req.sqlConnect(query, values);
+
+    if (passwordResults.affectedRows === 1) {
+      userId = passwordResults.insertId;
+
+      // Insert data into the users table
+      query = `INSERT IGNORE INTO users (id, name, phone, email, status) VALUES (?, ?, ?, ?, ?)`;
+      values = [userId, name, phone, email, "customer"];
+
+      const userResults = await req.sqlConnect(query, values);
+
+      if (userResults.affectedRows === 1) {
+        req.body.id = userId;
+        res.status(200).json(req.body);
+      } else {
+        res.status(500).send("An error occurred while saving user");
       }
-      console.log("Connected to MySQL server");
-
-      connection.query(query, values, (err, results) => {
-        if (err) {
-          console.error("Error executing query: " + err.code);
-          reject(err);
-        }
-
-        connection.end((err) => {
-          if (err) {
-            console.error("Error closing connection: " + err.stack);
-            return;
-          }
-          console.log("MySQL connection closed");
-        });
-
-        resolve(results);
-      });
-    });
-  });
-}
+    } else {
+      res.status(409).send("Name or password already exists");
+    }
+  } catch (err) {
+    console.error("Error executing query: " + err.stack);
+    res.status(500).send("An error occurred");
+  }
+});
 
 module.exports = router;

@@ -2,7 +2,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import styles from "./Navbar.module.css";
 
 function Navbar() {
-  const name = JSON.parse(localStorage.getItem("currentUser")).username;
+  const name = JSON.parse(localStorage.getItem("currentUser")).name;
   return (
     <>
       <nav className={styles.navbar}>
