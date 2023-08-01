@@ -8,6 +8,7 @@ import Register from "./pages/Register";
 import Navbar from "./Navbar";
 import Error from "./pages/Error";
 import Store from "./pages/Store";
+import Category from "./pages/Category";
 
 function App() {
   const [currentName, setCurrentName] = useState("");
@@ -42,10 +43,18 @@ function App() {
             }
           >
             <Route
-              path={`/store`}
+              path="store"
               element={
                 <ProtectedRoute>
                   <Store />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/store/:category"
+              element={
+                <ProtectedRoute>
+                  <Category />
                 </ProtectedRoute>
               }
             />
