@@ -51,7 +51,7 @@ function App() {
               }
             />
             <Route
-              path="/store/:category"
+              path="store/:category"
               element={
                 <ProtectedRoute>
                   <Category />

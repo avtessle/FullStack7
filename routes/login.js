@@ -1,12 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-const mysql = require("mysql2");
-
-let myPassword = "lq2p0J8h";
-let myDatabase = "fullStack7";
-
-
 router.post("/", (req, res) => {
   const { name, password } = req.body;
 
