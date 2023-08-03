@@ -6,6 +6,7 @@ const mysql = require("mysql2");
 const loginRouter = require("./routes/login");
 const registerRouter = require("./routes/register");
 const storeRouter = require("./routes/store");
+const cartRouter = require("./routes/cart");
 
 app.use(express.json());
 app.use(cors());
@@ -62,6 +63,7 @@ app.use(sqlConnectMiddleware);
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/store", storeRouter);
+app.use("/cart", cartRouter);
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");

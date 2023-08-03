@@ -1,5 +1,4 @@
-
-const mysql = require('mysql2');
+const mysql = require("mysql2");
 
 let mysql = require("mysql2");
 const myPassword = "lq2p0J8h";
@@ -150,7 +149,24 @@ const soldProductsData = [
   },
 ];
 
+const createCartProductsTableQuery = `
+CREATE TABLE IF NOT EXISTS sold_products (
+  productId VARCHAR(255),
+  userId VARCHAR(255),
+  quantity INT,
+  PRIMARY KEY (productUd, userId)
+);`;
+
+const cartProductsData = [
+  {
+    productId: "1",
+    userId: "6",
+    quantity: 2,
+  },
+];
+
 createTable(createUsersTableQuery, usersData, "passwords");
 createTable(createPasswordsTableQuery, passwordsData, "passwords");
 createTable(createProductsTableQuery, productsData, "products");
 createTable(createSoldProductsTableQuery, soldProductsData, "sold_products");
+createTable(createCartProductsTableQuery, cartProductsData, "cart_products");
