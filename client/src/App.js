@@ -9,6 +9,7 @@ import Navbar from "./Navbar";
 import Error from "./pages/Error";
 import Store from "./pages/Store";
 import Category from "./pages/Category";
+import Cart from "./pages/Cart";
 
 function App() {
   const [currentName, setCurrentName] = useState("");
@@ -55,6 +56,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Category />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="cart"
+              element={
+                <ProtectedRoute>
+                  <Cart />
                 </ProtectedRoute>
               }
             />

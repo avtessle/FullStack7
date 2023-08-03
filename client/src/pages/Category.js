@@ -16,11 +16,11 @@ function Category() {
     } else {
       setJewelry(JSON.parse(savedJewelry));
     }
-  }, []);
+  }, [category]);
 
   useEffect(() => {
     localStorage.setItem(category, JSON.stringify(jewelry));
-  }, [jewelry]);
+  }, [category, jewelry]);
 
   const getData = async (url, setData) => {
     const requestOptions = {

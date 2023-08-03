@@ -10,11 +10,12 @@ router.get("/:jewelry", (req, res) => {
   req
     .sqlConnect(query, values)
     .then((results) => {
-      if (results.length > 0) {
-        res.status(200).json(results);
-      } else {
-        res.status(404).send("No jewelry from this category");
-      }
+      res.status(200).json(results);
+      // if (results.length > 0) {
+      //   res.status(200).json(results);
+      // } else {
+      //   res.status(404).send("No jewelry from this category");
+      // }
     })
     .catch((err) => {
       console.error(err);
