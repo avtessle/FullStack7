@@ -1,5 +1,3 @@
-const mysql = require("mysql2");
-
 let mysql = require("mysql2");
 const myPassword = "lq2p0J8h";
 const myDatabase = "fullStack7";
@@ -10,18 +8,18 @@ const con = mysql.createConnection({
   password: myPassword,
 
   //comment in first run
-  //database:myDatabase
+  database:myDatabase
 });
 
 //comment after first run
-con.connect(function (err) {
+/* con.connect(function (err) {
   if (err) throw err;
   console.log("Connected!");
   con.query(`CREATE DATABASE ${myDatabase}`, function (err, result) {
     if (err) throw err;
     console.log("Database created");
   });
-});
+}); */
 
 function createTable(createTableQuery, data, type) {
   const insertQuery = `INSERT INTO ${type} VALUES ?`;

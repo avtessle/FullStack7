@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getData, addData, editData, deleteData } from "../apiUtils";
+import "./store.css";
 
 function Category() {
   const navigate = useNavigate();
@@ -29,11 +30,10 @@ function Category() {
       <ul>
         {jewelry.map((item) => (
           <li key={item.id}>
-            <p>ID: {item.id}</p>
-            <p>Category: {item.category}</p>
-            <p>Description: {item.description}</p>
+            <p><img src={item.image} alt={item.description} /></p>
+            <p>{item.description}</p>
             <p>Price: {item.price}</p>
-            <p>Quantity: {item.quantity}</p>
+            <p>{item.quantity} left</p>
           </li>
         ))}
       </ul>
