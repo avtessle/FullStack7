@@ -19,6 +19,8 @@ function Store() {
     getData(url, setCartProducts, navigate);
   }, [user]);
 
+  const isManager = (user.status==="manager");
+
   return (
     <div>
       <h1>Hello, {user.name}!</h1>

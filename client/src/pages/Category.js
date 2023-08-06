@@ -64,6 +64,15 @@ function Category() {
     }
   };
 
+   const deleteProductFromStore = (productId) => {
+    // Update storeProducts state by filtering out the deleted product
+    //const updatedProducts = storeProducts.filter(product => product.id !== productId);
+    //setStoreProducts(updatedProducts);
+    return productId;
+  }; 
+
+  const isManager = (user.status==="admin");
+
   return (
     <div>
       <h2>{category}</h2>
@@ -76,6 +85,9 @@ function Category() {
             <p>{item.description}</p>
             <p>Price: {item.price}</p>
             <p>{item.quantity} left</p>
+            {isManager && (
+              <button onClick={() => deleteProductFromStore(item.id)}>Delete</button>
+            )}
             <button onClick={() => addToCart(item)}>Add to cart</button>
           </li>
         ))}
