@@ -9,21 +9,32 @@ router.post("/", (req, res) => {
     return;
   }
 
-  const query = `SELECT * FROM passwords WHERE name = ? LIMIT 1`;
-  const values = [name];
+  const passwordQuery = `SELECT * FROM passwords WHERE name = ? LIMIT 1`;
+  const passwordValues = [name];
 
-  req
-    .sqlConnect(query, values)
-    .then((results) => {
-      if (results.length === 1 && results[0].password === password) {
-        res.status(200).json(results[0]);
+  req.sqlConnect(passwordQuery, passwordValues)
+    .then((passwordResults) => {
+      if (passwordResults.length === 1 && passwordResults[0].password === password) {
+        const userId = passwordResults[0].id;
+
+        const userQuery = `SELECT * FROM users WHERE id = ? LIMIT 1`;
+        const userValues = [userId];
+
+        return req.sqlConnect(userQuery, userValues);
       } else {
-        res.status(401).send("Wrong name or password");
+        throw new Error("Wrong name or password");
+      }
+    })
+    .then((userResults) => {
+      if (userResults.length === 1) {
+        res.status(200).json(userResults[0]);
+      } else {
+        throw new Error("User not found");
       }
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send("An error occurred");
+      res.status(401).send(err.message); // You can adjust the status code accordingly
     });
 });
 

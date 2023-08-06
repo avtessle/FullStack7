@@ -17,6 +17,7 @@ function Login({ setCurrentName }) {
   //   localStorage.clear();
   // }
 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !password) {
