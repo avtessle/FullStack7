@@ -8,7 +8,7 @@ const con = mysql.createConnection({
   password: myPassword,
 
   //comment in first run
-  database:myDatabase
+  database: myDatabase,
 });
 
 //comment after first run

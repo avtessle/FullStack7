@@ -64,7 +64,13 @@ export const editData = async (url, data, setData, id = "id", navigate) => {
   }
 };
 
-export const deleteData = async (url, recordId, setData, navigate) => {
+export const deleteData = async (
+  url,
+  recordId,
+  setData,
+  id = ["id"],
+  navigate
+) => {
   const requestOptions = {
     method: "DELETE",
     headers: {
@@ -76,7 +82,10 @@ export const deleteData = async (url, recordId, setData, navigate) => {
     const response = await fetch(url, requestOptions);
     if (response.ok) {
       setData((prevData) => {
-        return prevData.filter((record) => record.id !== recordId);
+        return prevData.filter(
+          (record) =>
+            record[id[0]] !== recordId[0] && record[id[1]] !== recordId[1]
+        );
       });
     }
   } catch (error) {

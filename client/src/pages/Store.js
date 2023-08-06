@@ -12,7 +12,6 @@ function Store() {
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("currentUser")));
-    console.log(user);
   }, []);
 
   useEffect(() => {

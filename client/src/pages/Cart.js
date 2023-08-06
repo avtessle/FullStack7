@@ -1,24 +1,37 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../CartContext";
+import { editData, deleteData } from "../apiUtils";
 
 function Cart() {
+  const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("currentUser"));
   const { cartProducts, setCartProducts } = useCart();
-  //const [products, setProducts] = useState([]);
 
   useEffect(() => {
     localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
   }, [cartProducts]);
 
-  // useEffect(() => {
-  //   let savedProducts = JSON.parse(localStorage.getItem("cartProducts"));
-  //   if (savedProducts.length === 0) {
-  //     const url = `http://localhost:3000/cart/${user.id}`;
-  //     getData(url, setCartProducts, navigate);
-  //   } else {
-  //     setCartProducts(savedProducts);
-  //   }
-  // }, []);
+  const removeFromCart = (product) => {
+    let url = `http://localhost:3000/cart/${user.id}`;
+
+    if (product.quantity > 1) {
+      let updatedProduct = {
+        ...product,
+        quantity: product.quantity - 1,
+      };
+      editData(url, updatedProduct, setCartProducts, "productId", navigate);
+    } else {
+      url = `http://localhost:3000/cart/${user.id}/${product.productId}`;
+      deleteData(
+        url,
+        [product.productId, product.userId],
+        setCartProducts,
+        ["productId", "userId"],
+        navigate
+      );
+    }
+  };
 
   return (
     <div>
@@ -31,7 +44,9 @@ function Cart() {
             <p>Description: {item.description}</p>
             <p>Price: {item.price}</p>
             <p>Quantity: {item.quantity}</p>
-            <button>Remove</button>
+            <button on onClick={() => removeFromCart(item)}>
+              Remove
+            </button>
           </li>
         ))}
       </ul>
