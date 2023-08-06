@@ -10,6 +10,7 @@ import Error from "./pages/Error";
 import Store from "./pages/Store";
 import Category from "./pages/Category";
 import Cart from "./pages/Cart";
+import { CartProvider } from "./CartContext";
 
 function App() {
   const [currentName, setCurrentName] = useState("");
@@ -24,52 +25,54 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
-          <Route
-            path="login"
-            element={<Login setCurrentName={setCurrentName} />}
-          />
-          <Route
-            path="register"
-            element={<Register setCurrentName={setCurrentName} />}
-          />
+        <CartProvider>
+          <Routes>
+            <Route path="/" element={<Navigate to="/login" />} />
+            <Route
+              path="login"
+              element={<Login setCurrentName={setCurrentName} />}
+            />
+            <Route
+              path="register"
+              element={<Register setCurrentName={setCurrentName} />}
+            />
 
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Navbar />
-              </ProtectedRoute>
-            }
-          >
             <Route
-              path="store"
+              path="/"
               element={
                 <ProtectedRoute>
-                  <Store />
+                  <Navbar />
                 </ProtectedRoute>
               }
-            />
-            <Route
-              path="store/:category"
-              element={
-                <ProtectedRoute>
-                  <Category />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="cart"
-              element={
-                <ProtectedRoute>
-                  <Cart />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="*" element={<Error />} />
-          </Route>
-        </Routes>
+            >
+              <Route
+                path="store"
+                element={
+                  <ProtectedRoute>
+                    <Store />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="store/:category"
+                element={
+                  <ProtectedRoute>
+                    <Category />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="cart"
+                element={
+                  <ProtectedRoute>
+                    <Cart />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="*" element={<Error />} />
+            </Route>
+          </Routes>
+        </CartProvider>
       </BrowserRouter>
     </div>
   );

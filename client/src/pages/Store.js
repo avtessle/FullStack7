@@ -1,9 +1,24 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useCart } from "../CartContext";
+import { useState, useEffect } from "react";
+import { getData } from "../apiUtils";
 import ringsImage from "../images/rings.jpeg";
 import necklacesImage from "../images/necklaces.jpeg";
 
 function Store() {
-  const user = JSON.parse(localStorage.getItem("currentUser"));
+  const navigate = useNavigate();
+  const [user, setUser] = useState([]);
+  const { cartProducts, setCartProducts } = useCart();
+
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("currentUser")));
+    console.log(user);
+  }, []);
+
+  useEffect(() => {
+    const url = `http://localhost:3000/cart/${user.id}`;
+    getData(url, setCartProducts, navigate);
+  }, [user]);
 
   return (
     <div>

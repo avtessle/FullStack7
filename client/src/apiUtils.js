@@ -25,7 +25,7 @@ export const addData = async (url, data, setData, navigate) => {
   };
 
   try {
-    const response = await fetch(url, requestOptions, navigate);
+    const response = await fetch(url, requestOptions);
     if (response.status === 200) {
       const newData = await response.json();
       setData((prevData) => [...prevData, newData]);
@@ -36,7 +36,7 @@ export const addData = async (url, data, setData, navigate) => {
   }
 };
 
-export const editData = async (url, data, setData, navigate) => {
+export const editData = async (url, data, setData, id = "id", navigate) => {
   const requestOptions = {
     method: "PUT",
     headers: {
@@ -51,7 +51,7 @@ export const editData = async (url, data, setData, navigate) => {
       const updatedRecord = await response.json();
       setData((prevData) => {
         return prevData.map((record) => {
-          if (record.id === updatedRecord.id) {
+          if (record[id] === updatedRecord[id]) {
             return updatedRecord;
           }
           return record;

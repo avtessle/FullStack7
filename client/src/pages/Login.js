@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./Login.module.css";
 import { Link } from "react-router-dom";
 
@@ -9,9 +9,13 @@ function Login({ setCurrentName }) {
 
   const navigate = useNavigate();
 
-  if (localStorage.getItem("currentUser")) {
+  useEffect(() => {
     localStorage.clear();
-  }
+  }, [name]);
+
+  // if (localStorage.getItem("currentUser")) {
+  //   localStorage.clear();
+  // }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
