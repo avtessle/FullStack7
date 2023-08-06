@@ -57,6 +57,7 @@ function Category() {
         category: product.category,
         description: product.description,
         price: product.price,
+        image: product.image,
       };
 
       addData(url, updatedProduct, setCartProducts, navigate);

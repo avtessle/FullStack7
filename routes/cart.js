@@ -3,7 +3,7 @@ const router = express.Router();
 
 router.get("/:userId", (req, res) => {
   const query = `
-  SELECT  cp.productId, cp.userId, cp.quantity, p.category, p.description, p.price
+  SELECT  cp.productId, cp.userId, cp.quantity, p.category, p.description, p.price,p.image
   FROM cart_products cp
   JOIN products p 
   ON cp.productId = p.id
@@ -55,7 +55,6 @@ router.put("/:userId", (req, res) => {
 });
 
 router.delete("/:userId/:productId", (req, res) => {
-  const product = req.body;
   const query = `DELETE from cart_products WHERE productId = ? And userId = ?`;
   const values = [req.params.productId, req.params.userId];
 
