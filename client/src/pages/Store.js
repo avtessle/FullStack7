@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { getData } from "../apiUtils";
 import ringsImage from "../images/rings.jpeg";
 import necklacesImage from "../images/necklaces.jpeg";
+import styles from "./store.module.css"
 
 function Store() {
   const navigate = useNavigate();
@@ -39,16 +40,16 @@ function Store() {
   const isManager = user.status === "admin";
 
   return (
-    <div className="store-container">
-      <h1 className="welcome-message">Hello, {user.name}!</h1>
-      <div className="category-links">
-        <NavLink to="/store/necklaces" className="category-link">
-          <p className="category-title">Necklaces</p>
-          <img src={necklacesImage} alt="necklaces" className="category-image" />
+    <div className={styles["store-container"]}>
+      <h1 className={styles["welcome-message"]}>Hello, {user.name}!</h1>
+      <div className={styles["category-links"]}>
+        <NavLink to="/store/necklaces" className={styles["category-link"]}>
+          <p className={styles["category-title"]}>Necklaces</p>
+          <img src={necklacesImage} alt="necklaces" className={styles["category-image"]} />
         </NavLink>
-        <NavLink to="/store/rings" className="category-link">
-          <p className="category-title">Rings</p>
-          <img src={ringsImage} alt="rings" className="category-image" />
+        <NavLink to="/store/rings" className={styles["category-link"]}>
+          <p className={styles["category-title"]}>Rings</p>
+          <img src={ringsImage} alt="rings" className={styles["category-image"]} />
         </NavLink>
       </div>
     </div>

@@ -24,6 +24,10 @@ function Category() {
     );
   }, [category]);
 
+  useEffect(() => {
+    localStorage.setItem("allProducts", JSON.stringify(allProducts));
+  }, [products]);
+
   const addToCart = (product) => {
     const description = product.description;
     const similarProduct = cartProducts.find(
@@ -63,16 +67,16 @@ function Category() {
   };
 
 
-  
-    const deleteProductFromStore = async (product) => {
-      try {
-        const url = `http://localhost:3000/store/${product.id}`;
-        await deleteData(url, product, setProducts, "id", navigate);
-      } catch (error) {
-        console.error("Error deleting product:", error);
-      }
-    };
-  
+
+  const deleteProductFromStore = async (product) => {
+    try {
+      const url = `http://localhost:3000/store/${product.id}`;
+      await deleteData(url, product, setProducts, "id", navigate);
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
+
 
   const isManager = user.status === "admin";
 
