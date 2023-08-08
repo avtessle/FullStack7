@@ -1,21 +1,44 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/:jewelry", (req, res) => {
-  const query = `SELECT * FROM products WHERE category = ?`;
-  const values = [
-    req.params.jewelry.substring(0, req.params.jewelry.length - 1),
-  ];
+router.get("/", (req, res) => {
+  const query = `SELECT * FROM products`;
+
+  req
+    .sqlConnect(query)
+    .then((results) => {
+      res.status(200).json(results);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("An error occurred");
+    });
+});
+
+router.put("/", (req, res) => {
+  const product = req.body;
+  const query = `UPDATE products SET quantity = ? WHERE id = ?`;
+  const values = [product.quantity, product.id];
 
   req
     .sqlConnect(query, values)
-    .then((results) => {
-      res.status(200).json(results);
-      // if (results.length > 0) {
-      //   res.status(200).json(results);
-      // } else {
-      //   res.status(404).send("No jewelry from this category");
-      // }
+    .then(() => {
+      res.status(200).json(product);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("An error occurred");
+    });
+});
+
+router.delete("/", (req, res) => {
+  const query = `DELETE from products WHERE id = ?`;
+  const values = [req.params.productId];
+
+  req
+    .sqlConnect(query, values)
+    .then(() => {
+      res.status(200).json({ message: "Products deleted successfully" });
     })
     .catch((err) => {
       console.error(err);

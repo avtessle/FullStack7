@@ -1,12 +1,23 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../CartContext";
-import { editData, deleteData } from "../apiUtils";
+import { useProducts } from "../ProductsContex";
+import { editData, deleteData, deleteAllData } from "../apiUtils";
 
 function Cart() {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("currentUser"));
+
   const { cartProducts, setCartProducts } = useCart();
+  const { allProducts, setAllProducts } = useProducts();
+
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+  const totalPrice = cartProducts.reduce((total, product) => {
+    return total + parseFloat(product.price) * product.quantity;
+  }, 0);
+
+  useEffect(() => {
+    localStorage.setItem("allProducts", JSON.stringify(allProducts));
+  }, [allProducts]);
 
   useEffect(() => {
     localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
@@ -25,12 +36,42 @@ function Cart() {
       url = `http://localhost:3000/cart/${user.id}/${product.productId}`;
       deleteData(
         url,
-        [product.productId, product.userId],
+        product,
         setCartProducts,
         ["productId", "userId"],
         navigate
       );
     }
+  };
+
+  const checkout = () => {
+    //quantity-=1 in allProducts
+    let url = `http://localhost:3000/store`;
+    const cartProductIds = new Set(
+      cartProducts.map((product) => product.productId)
+    );
+
+    allProducts.forEach((product) => {
+      if (cartProductIds.has(product.id)) {
+        const cartProduct = cartProducts.find(
+          (cartProduct) => cartProduct.productId === product.id
+        );
+
+        const updatedQuantity = product.quantity - cartProduct.quantity;
+
+        editData(
+          url,
+          { ...product, quantity: updatedQuantity },
+          setAllProducts,
+          "id",
+          navigate
+        );
+      }
+    });
+
+    //delete all from cartProducts
+    url = `http://localhost:3000/cart/${user.id}`;
+    deleteAllData(url, setCartProducts, navigate);
   };
 
   return (
@@ -44,12 +85,12 @@ function Cart() {
             <p>Description: {item.description}</p>
             <p>Price: {item.price}</p>
             <p>Quantity: {item.quantity}</p>
-            <button on onClick={() => removeFromCart(item)}>
-              Remove
-            </button>
+            <button onClick={() => removeFromCart(item)}>Remove</button>
           </li>
         ))}
       </ul>
+      <h3>Total: {parseFloat(totalPrice).toFixed(2)}</h3>
+      <button onClick={checkout}>checkout</button>
     </div>
   );
 }

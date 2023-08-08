@@ -36,7 +36,8 @@ export const addData = async (url, data, setData, navigate) => {
   }
 };
 
-export const editData = async (url, data, setData, id = "id", navigate) => {
+//id=id type to delete by
+export const editData = async (url, data, setData, id, navigate) => {
   const requestOptions = {
     method: "PUT",
     headers: {
@@ -64,9 +65,10 @@ export const editData = async (url, data, setData, id = "id", navigate) => {
   }
 };
 
+//id=an array of all the id types to delete by (delete if all id matches)
 export const deleteData = async (
   url,
-  recordId,
+  record,
   setData,
   id = ["id"],
   navigate
@@ -82,11 +84,34 @@ export const deleteData = async (
     const response = await fetch(url, requestOptions);
     if (response.ok) {
       setData((prevData) => {
-        return prevData.filter(
-          (record) =>
-            record[id[0]] !== recordId[0] && record[id[1]] !== recordId[1]
-        );
+        return prevData.filter((currentRecord) => {
+          for (let i = 0; i < id.length; i++) {
+            if (currentRecord[id[i]] !== record[id[i]]) {
+              return true; // Include if any id doesn't match
+            }
+          }
+          return false; // Exclude if all ids match
+        });
       });
+    }
+  } catch (error) {
+    console.error("Error deleting data:", error);
+    navigate("/error");
+  }
+};
+
+export const deleteAllData = async (url, setData, navigate) => {
+  const requestOptions = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  try {
+    const response = await fetch(url, requestOptions);
+    if (response.ok) {
+      setData([]);
     }
   } catch (error) {
     console.error("Error deleting data:", error);
