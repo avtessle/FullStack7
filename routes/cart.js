@@ -69,4 +69,19 @@ router.delete("/:userId/:productId", (req, res) => {
     });
 });
 
+router.delete("/:userId", (req, res) => {
+  const query = `DELETE from cart_products WHERE userId = ?`;
+  const values = [req.params.userId];
+
+  req
+    .sqlConnect(query, values)
+    .then(() => {
+      res.status(200).json({ message: "Cart Product deleted successfully" });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("An error occurred");
+    });
+});
+
 module.exports = router;

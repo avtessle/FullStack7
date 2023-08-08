@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getData, addData, editData, deleteData } from "../apiUtils";
+import { addData, editData } from "../apiUtils";
 import "./store.css";
 import { useCart } from "../CartContext";
 
@@ -10,21 +10,17 @@ function Category() {
   const { cartProducts, setCartProducts } = useCart();
 
   const user = JSON.parse(localStorage.getItem("currentUser"));
+  const allProducts = JSON.parse(localStorage.getItem("allProducts"));
   const [jewelry, setJewelry] = useState([]);
 
   useEffect(() => {
-    let savedJewelry = localStorage.getItem(category);
-    if (!savedJewelry) {
-      const url = `http://localhost:3000/store/${category}`;
-      getData(url, setJewelry, navigate);
-    } else {
-      setJewelry(JSON.parse(savedJewelry));
-    }
+    setJewelry(
+      allProducts.filter(
+        (product) =>
+          product.category === category.substring(0, category.length - 1)
+      )
+    );
   }, [category]);
-
-  useEffect(() => {
-    localStorage.setItem(category, JSON.stringify(jewelry));
-  }, [category, jewelry]);
 
   const addToCart = (product) => {
     const description = product.description;
@@ -64,14 +60,14 @@ function Category() {
     }
   };
 
-   const deleteProductFromStore = (productId) => {
+  const deleteProductFromStore = (productId) => {
     // Update storeProducts state by filtering out the deleted product
     //const updatedProducts = storeProducts.filter(product => product.id !== productId);
     //setStoreProducts(updatedProducts);
     return productId;
-  }; 
+  };
 
-  const isManager = (user.status==="admin");
+  const isManager = user.status === "admin";
 
   return (
     <div>
@@ -86,7 +82,9 @@ function Category() {
             <p>Price: {item.price}</p>
             <p>{item.quantity} left</p>
             {isManager && (
-              <button onClick={() => deleteProductFromStore(item.id)}>Delete</button>
+              <button onClick={() => deleteProductFromStore(item.id)}>
+                Delete
+              </button>
             )}
             <button onClick={() => addToCart(item)}>Add to cart</button>
           </li>
