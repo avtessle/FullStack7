@@ -36,19 +36,19 @@ function Store() {
     localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
   }, [cartProducts]);
 
-  const isManager = user.status === "manager";
+  const isManager = user.status === "admin";
 
   return (
-    <div>
-      <h1>Hello, {user.name}!</h1>
-      <div>
-        <NavLink to="/store/necklaces">
-          <p>Necklaces</p>
-          <img src={necklacesImage} alt="necklaces image" />
+    <div className="store-container">
+      <h1 className="welcome-message">Hello, {user.name}!</h1>
+      <div className="category-links">
+        <NavLink to="/store/necklaces" className="category-link">
+          <p className="category-title">Necklaces</p>
+          <img src={necklacesImage} alt="necklaces" className="category-image" />
         </NavLink>
-        <NavLink to="/store/rings">
-          <p>Rings</p>
-          <img src={ringsImage} alt="rings image" />
+        <NavLink to="/store/rings" className="category-link">
+          <p className="category-title">Rings</p>
+          <img src={ringsImage} alt="rings" className="category-image" />
         </NavLink>
       </div>
     </div>

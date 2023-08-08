@@ -31,7 +31,7 @@ router.put("/", (req, res) => {
     });
 });
 
-router.delete("/", (req, res) => {
+router.delete("/:productId", (req, res) => {
   const query = `DELETE from products WHERE id = ?`;
   const values = [req.params.productId];
 

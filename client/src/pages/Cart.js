@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../CartContext";
 import { useProducts } from "../ProductsContex";
 import { editData, deleteData, deleteAllData } from "../apiUtils";
+import styles from "./Cart.module.css";
 
 function Cart() {
   const navigate = useNavigate();
@@ -75,22 +76,34 @@ function Cart() {
   };
 
   return (
-    <div>
-      <h1>{user.name}</h1>
-      <h2>Your cart</h2>
-      <ul>
+    <div className={styles["cart-container"]}>
+      <h1 className={styles["cart-heading"]}>{user.name}'s Cart</h1>
+      <ul className={styles["cart-list"]}>
         {cartProducts.map((item) => (
-          <li key={item.productId}>
-            <p>Category: {item.category}</p>
-            <p>Description: {item.description}</p>
-            <p>Price: {item.price}</p>
-            <p>Quantity: {item.quantity}</p>
-            <button onClick={() => removeFromCart(item)}>Remove</button>
+          <li key={item.productId} className={styles["cart-item"]}>
+            <div className={styles["cart-item-description"]}>
+            <img src={item.image} alt={item.description} />
+              <p>{item.description}</p>
+              <p>Price: {item.price}</p>
+              <p>Quantity: {item.quantity}</p>
+            </div>
+            <button
+              className={styles["cart-item-remove"]}
+              onClick={() => removeFromCart(item)}
+            >
+              Remove
+            </button>
           </li>
         ))}
       </ul>
-      <h3>Total: {parseFloat(totalPrice).toFixed(2)}</h3>
-      <button onClick={checkout}>checkout</button>
+      <h3 className={styles["cart-total"]}>
+        Total: {parseFloat(totalPrice).toFixed(2)}
+      </h3>
+      <div className={styles["cart-buttons"]}>
+        <button className={styles["cart-button"]} onClick={checkout}>
+          Checkout
+        </button>
+      </div>
     </div>
   );
 }

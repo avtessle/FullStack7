@@ -1,13 +1,15 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { addData, editData } from "../apiUtils";
-import "./store.css";
+import { addData, editData, deleteData } from "../apiUtils";
+import "./Category.css";
 import { useCart } from "../CartContext";
+import { useProducts } from "../ProductsContex";
 
 function Category() {
   const navigate = useNavigate();
   const { category } = useParams();
   const { cartProducts, setCartProducts } = useCart();
+  const { products, setProducts } = useProducts();
 
   const user = JSON.parse(localStorage.getItem("currentUser"));
   const allProducts = JSON.parse(localStorage.getItem("allProducts"));
@@ -60,38 +62,46 @@ function Category() {
     }
   };
 
-  const deleteProductFromStore = (productId) => {
-    // Update storeProducts state by filtering out the deleted product
-    //const updatedProducts = storeProducts.filter(product => product.id !== productId);
-    //setStoreProducts(updatedProducts);
-    return productId;
-  };
+
+  
+    const deleteProductFromStore = async (product) => {
+      try {
+        const url = `http://localhost:3000/store/${product.id}`;
+        await deleteData(url, product, setProducts, "id", navigate);
+      } catch (error) {
+        console.error("Error deleting product:", error);
+      }
+    };
+  
 
   const isManager = user.status === "admin";
 
   return (
-    <div>
-      <h2>{category}</h2>
-      <ul>
+    <div className="category-container">
+      <h2 className="category-heading">{category}</h2>
+      <ul className="category-list">
         {jewelry.map((item) => (
-          <li key={item.id}>
-            <p>
-              <img src={item.image} alt={item.description} />
-            </p>
-            <p>{item.description}</p>
+          <li key={item.id} className="category-item">
+            <img src={item.image} alt={item.description} className="category-image" />
+            <p className="category-title">{item.description}</p>
             <p>Price: {item.price}</p>
             <p>{item.quantity} left</p>
-            {isManager && (
-              <button onClick={() => deleteProductFromStore(item.id)}>
-                Delete
+            <div className="button-group">
+              {isManager && (
+                <button className="delete-button" onClick={() => deleteProductFromStore(item)}>
+                  Delete
+                </button>
+              )}
+              <button className="add-to-cart-button" onClick={() => addToCart(item)}>
+                Add to cart
               </button>
-            )}
-            <button onClick={() => addToCart(item)}>Add to cart</button>
+            </div>
           </li>
         ))}
       </ul>
     </div>
   );
 }
+
 
 export default Category;
