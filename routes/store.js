@@ -23,4 +23,18 @@ router.get("/:jewelry", (req, res) => {
     });
 });
 
+router.delete("/:productId", (req, res) => {
+  const query = `DELETE from products WHERE id = ?`;
+  const values = [req.params.productId];
+
+  req
+    .sqlConnect(query, values)
+    .then(() => {
+      res.status(200).json({ message: "Product deleted successfully" });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("An error occurred");
+    });
+});
 module.exports = router;
