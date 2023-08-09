@@ -31,6 +31,22 @@ router.put("/", (req, res) => {
     });
 });
 
+router.post("/", (req, res) => {
+  const product = req.body;
+  const query = `INSERT INTO products (category, description, price, quantity, image) VALUES (?,?, ?,?, ?)`;
+  const values = [product.category, product.description, product.price,product.quantity, product.image];
+
+  req
+    .sqlConnect(query, values)
+    .then(() => {
+      res.status(200).json(product);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("An error occurred");
+    });
+});
+
 router.delete("/:productId", (req, res) => {
   const query = `DELETE from products WHERE id = ?`;
   const values = [req.params.productId];

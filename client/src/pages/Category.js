@@ -4,17 +4,28 @@ import { addData, editData, deleteData } from "../apiUtils";
 import "./Category.css";
 import { useCart } from "../CartContext";
 import { useProducts } from "../ProductsContex";
+import AddProductPopup from "./AddProductPopup";
+
 
 function Category() {
   const navigate = useNavigate();
   const { category } = useParams();
   const { cartProducts, setCartProducts } = useCart();
   const { allProducts, setAllProducts } = useProducts();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
 
   const user = JSON.parse(localStorage.getItem("currentUser"));
   const [jewelry, setJewelry] = useState([]);
 
   useEffect(() => {
+    localStorage.setItem("allProducts", JSON.stringify(allProducts));
+  }, [allProducts]);
+
+  useEffect(() => {
+    console.log("Category effect triggered");
+    console.log("Category:", category);
+    console.log("All Products:", allProducts);
     setJewelry(
       allProducts.filter(
         (product) =>
@@ -23,9 +34,7 @@ function Category() {
     );
   }, [category, allProducts]);
 
-  useEffect(() => {
-    localStorage.setItem("allProducts", JSON.stringify(allProducts));
-  }, [allProducts]);
+
 
   const addToCart = (product) => {
     const description = product.description;
@@ -66,6 +75,7 @@ function Category() {
   };
 
   const deleteProductFromStore = async (product) => {
+
     try {
       const url = `http://localhost:3000/store/${product.id}`;
       await deleteData(url, product, setAllProducts, ["id"], navigate);
@@ -74,11 +84,94 @@ function Category() {
     }
   };
 
+ /*  const addProductToStore = async (product) => {
+    console.log(product);
+    const description = product.description;
+    const similarProduct = jewelry.find(
+      (product) => product.description === description
+    );
+
+    let url; 
+    let updatedProduct;
+    let newProduct ;
+
+    if (similarProduct) {
+      updatedProduct = {
+        ...similarProduct,
+        quantity: similarProduct.quantity + 1,
+      };
+      url = `http://localhost:3000/store/${product.id}`;
+      editData(url, updatedProduct, setAllProducts, "id", navigate);
+    }
+   
+    else {
+      newProduct = {
+        productId: product.id,
+        userId: user.id,
+        quantity: 1,
+        category: product.category,
+        description: product.description,
+        price: product.price,
+        image: product.image,
+      };
+      url = `http://localhost:3000/store/${product}`;
+
+      addData(url, newProduct, setAllProducts, navigate);
+    }
+ 
+  }; */
+
+  const addProductToStore = async (product) => {
+    console.log(product);
+    const description = product.description;
+    const similarProduct = jewelry.find(
+      (product) => product.description === description
+    );
+  
+    let url;
+    let updatedProduct;
+    let newProduct;
+  
+    if (similarProduct) {
+      updatedProduct = {
+        ...similarProduct,
+        quantity: similarProduct.quantity + 1,
+      };
+      url = `http://localhost:3000/store/${product.id}`;
+      editData(url, updatedProduct, setAllProducts, "id", navigate);
+    } else {
+      newProduct = {
+        productId: product.id,
+        userId: user.id,
+        quantity: 1,
+        category: product.category,
+        description: product.description,
+        price: product.price,
+        image: product.image,
+      };
+      url = `http://localhost:3000/store`; 
+  
+      addData(url, newProduct, setAllProducts, navigate);
+      console.log(jewelry);
+      console.log(allProducts);
+
+    }
+  };
+  
+
   const isManager = user.status === "admin";
 
   return (
     <div className="category-container">
       <h2 className="category-heading">{category}</h2>
+      {isManager && (
+        <button
+          className="add-button"
+          onClick={() => setIsPopupOpen(true)}
+        >
+          Add {category}
+        </button>
+      )}
       <ul className="category-list">
         {jewelry.map((item) => (
           <li key={item.id} className="category-item">
@@ -109,6 +202,20 @@ function Category() {
           </li>
         ))}
       </ul>
+      {/* {isManager && (
+            <button
+              className="add-button"
+              onClick={() => addProductToStore()}
+            >
+              Add {Category}
+            </button>
+          )} */}
+           <AddProductPopup
+        isOpen={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+        onAddProduct={addProductToStore}
+        category={category}
+      />
     </div>
   );
 }
