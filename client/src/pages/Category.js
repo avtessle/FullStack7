@@ -9,10 +9,9 @@ function Category() {
   const navigate = useNavigate();
   const { category } = useParams();
   const { cartProducts, setCartProducts } = useCart();
-  const { products, setProducts } = useProducts();
+  const { allProducts, setAllProducts } = useProducts();
 
   const user = JSON.parse(localStorage.getItem("currentUser"));
-  const allProducts = JSON.parse(localStorage.getItem("allProducts"));
   const [jewelry, setJewelry] = useState([]);
 
   useEffect(() => {
@@ -22,11 +21,11 @@ function Category() {
           product.category === category.substring(0, category.length - 1)
       )
     );
-  }, [category]);
+  }, [category, allProducts]);
 
   useEffect(() => {
     localStorage.setItem("allProducts", JSON.stringify(allProducts));
-  }, [products]);
+  }, [allProducts]);
 
   const addToCart = (product) => {
     const description = product.description;
@@ -66,17 +65,14 @@ function Category() {
     }
   };
 
-
-
   const deleteProductFromStore = async (product) => {
     try {
       const url = `http://localhost:3000/store/${product.id}`;
-      await deleteData(url, product, setProducts, "id", navigate);
+      await deleteData(url, product, setAllProducts, ["id"], navigate);
     } catch (error) {
       console.error("Error deleting product:", error);
     }
   };
-
 
   const isManager = user.status === "admin";
 
@@ -86,17 +82,27 @@ function Category() {
       <ul className="category-list">
         {jewelry.map((item) => (
           <li key={item.id} className="category-item">
-            <img src={item.image} alt={item.description} className="category-image" />
+            <img
+              src={item.image}
+              alt={item.description}
+              className="category-image"
+            />
             <p className="category-title">{item.description}</p>
             <p>Price: {item.price}</p>
             <p>{item.quantity} left</p>
             <div className="button-group">
               {isManager && (
-                <button className="delete-button" onClick={() => deleteProductFromStore(item)}>
+                <button
+                  className="delete-button"
+                  onClick={() => deleteProductFromStore(item)}
+                >
                   Delete
                 </button>
               )}
-              <button className="add-to-cart-button" onClick={() => addToCart(item)}>
+              <button
+                className="add-to-cart-button"
+                onClick={() => addToCart(item)}
+              >
                 Add to cart
               </button>
             </div>
@@ -106,6 +112,5 @@ function Category() {
     </div>
   );
 }
-
 
 export default Category;

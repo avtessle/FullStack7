@@ -70,7 +70,7 @@ export const deleteData = async (
   url,
   record,
   setData,
-  id = ["id"],
+  idArr = ["id"],
   navigate
 ) => {
   const requestOptions = {
@@ -85,8 +85,8 @@ export const deleteData = async (
     if (response.ok) {
       setData((prevData) => {
         return prevData.filter((currentRecord) => {
-          for (let i = 0; i < id.length; i++) {
-            if (currentRecord[id[i]] !== record[id[i]]) {
+          for (let i = 0; i < idArr.length; i++) {
+            if (currentRecord[idArr[i]] !== record[idArr[i]]) {
               return true; // Include if any id doesn't match
             }
           }

@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { getData } from "../apiUtils";
 import ringsImage from "../images/rings.jpeg";
 import necklacesImage from "../images/necklaces.jpeg";
-import styles from "./store.module.css"
+import styles from "./Store.module.css";
 
 function Store() {
   const navigate = useNavigate();
@@ -45,11 +45,19 @@ function Store() {
       <div className={styles["category-links"]}>
         <NavLink to="/store/necklaces" className={styles["category-link"]}>
           <p className={styles["category-title"]}>Necklaces</p>
-          <img src={necklacesImage} alt="necklaces" className={styles["category-image"]} />
+          <img
+            src={necklacesImage}
+            alt="necklaces"
+            className={styles["category-image"]}
+          />
         </NavLink>
         <NavLink to="/store/rings" className={styles["category-link"]}>
           <p className={styles["category-title"]}>Rings</p>
-          <img src={ringsImage} alt="rings" className={styles["category-image"]} />
+          <img
+            src={ringsImage}
+            alt="rings"
+            className={styles["category-image"]}
+          />
         </NavLink>
       </div>
     </div>

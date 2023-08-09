@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../CartContext";
 import { useProducts } from "../ProductsContex";
-import { editData, deleteData, deleteAllData } from "../apiUtils";
+import { editData, deleteData, deleteAllData, addData } from "../apiUtils";
 import styles from "./Cart.module.css";
 
 function Cart() {
@@ -10,6 +10,7 @@ function Cart() {
 
   const { cartProducts, setCartProducts } = useCart();
   const { allProducts, setAllProducts } = useProducts();
+  const [soldProducts, setSoldProducts] = useState([]);
 
   const user = JSON.parse(localStorage.getItem("currentUser"));
   const totalPrice = cartProducts.reduce((total, product) => {
@@ -70,6 +71,11 @@ function Cart() {
       }
     });
 
+    //add to soldProducts
+    // cartProducts.forEach((product) => {
+    //   addData(url, product, setSoldProducts, navigate);
+    // });
+
     //delete all from cartProducts
     url = `http://localhost:3000/cart/${user.id}`;
     deleteAllData(url, setCartProducts, navigate);
@@ -82,7 +88,7 @@ function Cart() {
         {cartProducts.map((item) => (
           <li key={item.productId} className={styles["cart-item"]}>
             <div className={styles["cart-item-description"]}>
-            <img src={item.image} alt={item.description} />
+              <img src={item.image} alt={item.description} />
               <p>{item.description}</p>
               <p>Price: {item.price}</p>
               <p>Quantity: {item.quantity}</p>

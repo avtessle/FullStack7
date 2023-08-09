@@ -38,7 +38,7 @@ router.delete("/:productId", (req, res) => {
   req
     .sqlConnect(query, values)
     .then(() => {
-      res.status(200).json({ message: "Products deleted successfully" });
+      res.status(200).json({ message: "Product deleted successfully" });
     })
     .catch((err) => {
       console.error(err);
