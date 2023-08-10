@@ -1,4 +1,4 @@
-import styles from "./Cart.module.css";
+import styles from "./Profile.module.css";
 
 function Profile({ soldProducts }) {
   const user = JSON.parse(localStorage.getItem("currentUser"));
