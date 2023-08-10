@@ -16,6 +16,20 @@ router.get("/:userId", (req, res) => {
     });
 });
 
+router.get("/", (req, res) => {
+  const query = `SELECT * FROM sold_products ORDER BY quantity DESC`
+  
+  req
+    .sqlConnect(query, values)
+    .then((results) => {
+      res.status(200).json(results);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("An error occurred");
+    });
+});
+
 router.post("/:userId", async function (req, res) {
   const product = req.body;
   const query = `INSERT INTO sold_products (purchaseId,productId, userId,date, quantity) VALUES (?, ?, ?, ?, ?)`;

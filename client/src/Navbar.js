@@ -6,6 +6,10 @@ import profileImage from "./images/profile.png";
 function Navbar() {
   //const name = JSON.parse(localStorage.getItem("currentUser")).name;
   const categories = ["necklaces", "earrings", "bracelets", "rings"];
+
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+  const isManager = user.status === "admin";
+
   return (
     <>
       <nav className={styles.navbar}>
@@ -31,9 +35,9 @@ function Navbar() {
             className={styles.iconImage}
           />
         </NavLink>
-        <NavLink to="/cart">
+        {!isManager&& (<NavLink to="/cart">
           <img src={cartImage} alt="cart image" className={styles.iconImage} />
-        </NavLink>
+        </NavLink>)}
       </nav>
       <Outlet />
     </>

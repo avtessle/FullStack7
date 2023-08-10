@@ -1,10 +1,18 @@
-import styles from "./Profile.module.css";
+import styles from "./Cart.module.css";
 
 function Profile({ soldProducts }) {
   const user = JSON.parse(localStorage.getItem("currentUser"));
   const allProducts = JSON.parse(localStorage.getItem("allProducts"));
-
+  const isManager = user.status === "admin";
   const groupedProducts = {};
+
+  const sortedSoldProducts = [...soldProducts].sort((a, b) => b.quantity - a.quantity);
+
+  const getProductDescription = (productId) => {
+    const product = allProducts.find((p) => p.id === productId);
+    return product ? product.description : console.warn(
+      `Product with ID not found in allProducts.`); 
+  };
 
   soldProducts.forEach((product) => {
     if (!groupedProducts[product.purchaseId]) {
@@ -47,6 +55,8 @@ function Profile({ soldProducts }) {
       </div>
 
       <div className={styles.soldProducts}>
+        {!isManager&&(
+          <div>
         <h2 className={styles.soldProductsTitle}>Shopping history</h2>
         {Object.keys(groupedProducts).map((purchaseId) => (
           <div key={purchaseId} className={styles.purchaseContainer}>
@@ -61,6 +71,19 @@ function Profile({ soldProducts }) {
             </ul>
           </div>
         ))}
+        </div>)}
+
+        {isManager&&(
+          <div>
+            <h2 className={styles.soldProductsTitle}>Best Sellers</h2>
+             <ul>
+        {sortedSoldProducts.map((product) => (
+          <li key={product.id}>
+            {getProductDescription(product.productId)} - Quantity: {product.quantity}
+          </li>
+        ))}
+      </ul>
+          </div>)}
       </div>
     </div>
   );
