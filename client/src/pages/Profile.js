@@ -10,32 +10,40 @@ function Profile({ soldProducts }) {
     if (!groupedProducts[product.purchaseId]) {
       groupedProducts[product.purchaseId] = [];
     }
+    
     const correspondingProduct = allProducts.find(
       (p) => p.id === product.productId
     );
-
-    groupedProducts[product.purchaseId].push({
-      ...product,
-      description: correspondingProduct.description,
-    });
+  
+    if (correspondingProduct) {
+      groupedProducts[product.purchaseId].push({
+        ...product,
+        description: correspondingProduct.description,
+      });
+    } else {
+      console.warn(
+        `Product with ID ${product.productId} not found in allProducts.`
+      );
+    }
   });
+  
 
   return (
     <div>
       <div className={styles.userProfile}>
         <h2 className={styles.userName}>User Profile</h2>
-        <p className={styles.userInfo}>
+        <div className={styles.userInfo}>
           <strong>Name:</strong> {user.name}
-        </p>
-        <p className={styles.userInfo}>
+        </div>
+        <div className={styles.userInfo}>
           <strong>Email:</strong> {user.email}
-        </p>
-        <p className={styles.userInfo}>
+        </div>
+        <div className={styles.userInfo}>
           <strong>Phone:</strong> {user.phone}
-        </p>
-        <p className={styles.userInfo}>
+        </div>
+        <div className={styles.userInfo}>
           <strong>Status:</strong> {user.status}
-        </p>
+        </div>
       </div>
 
       <div className={styles.soldProducts}>

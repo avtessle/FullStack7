@@ -167,9 +167,9 @@ function Category() {
               alt={item.description}
               className="category-image"
             />
-            <p className="category-title">{item.description}</p>
-            <p>Price: {item.price}</p>
-            <p>{item.quantity} left</p>
+            <div className="category-title">{item.description}</div>
+            <div>Price: {item.price}</div>
+            <div>{item.quantity} left</div>
             <div className="button-group">
               {isManager && (
                 <button

@@ -6,6 +6,7 @@ import { getData } from "../apiUtils";
 import ringsImage from "../images/rings.jpeg";
 import necklacesImage from "../images/necklaces.jpeg";
 import styles from "./Store.module.css";
+import "./Store.css";
 
 function Store({ soldProducts, setSoldProducts }) {
   const navigate = useNavigate();
@@ -52,10 +53,16 @@ function Store({ soldProducts, setSoldProducts }) {
 
   return (
     <div className={styles["store-container"]}>
-      <h1 className={styles["welcome-message"]}>Hello, {user.name}!</h1>
+      {/* <h1 className={styles["welcome-message"]}>Hello, {user.name}!</h1> */}
+      <div id="ourStory">
+        <h1 class="menu">Our Story</h1>
+        <p>We always pride ourselves in our ability to create wonderful products. This we achieve through the skill and artistry of our highly trained staff and the use of the very finest ingredients.
+            We are a Family-run Cafe in the heart of Bradford, with home cooking at the core of the business. The emphasis has been on quality and service. We go to great lengths to select the very best ingredients and where possible, local produce form the foundations of the menu. We are passionately devoted to our culinary success.
+        </p>
+    </div>
       <div className={styles["category-links"]}>
         <NavLink to="/store/necklaces" className={styles["category-link"]}>
-          <p className={styles["category-title"]}>Necklaces</p>
+          <div className={styles["category-title"]}>Necklaces</div>
           <img
             src={necklacesImage}
             alt="necklaces"
@@ -63,7 +70,7 @@ function Store({ soldProducts, setSoldProducts }) {
           />
         </NavLink>
         <NavLink to="/store/rings" className={styles["category-link"]}>
-          <p className={styles["category-title"]}>Rings</p>
+          <div className={styles["category-title"]}>Rings</div>
           <img
             src={ringsImage}
             alt="rings"
