@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import ProtectedRoute from "./ProtectedRoute";
 import Login from "./pages/Login";
@@ -15,14 +15,7 @@ import { CartProvider } from "./CartContext";
 import { ProductsProvider } from "./ProductsContex";
 
 function App() {
-  const [currentName, setCurrentName] = useState("");
-
-  useEffect(() => {
-    const user = localStorage.getItem("currentUser");
-    if (user) {
-      setCurrentName(JSON.parse(user).name);
-    }
-  }, []);
+  const [soldProducts, setSoldProducts] = useState([]);
 
   return (
     <div className="App">
@@ -31,14 +24,8 @@ function App() {
           <CartProvider>
             <Routes>
               <Route path="/" element={<Navigate to="/login" />} />
-              <Route
-                path="login"
-                element={<Login setCurrentName={setCurrentName} />}
-              />
-              <Route
-                path="register"
-                element={<Register setCurrentName={setCurrentName} />}
-              />
+              <Route path="login" element={<Login />} />
+              <Route path="register" element={<Register />} />
 
               <Route
                 path="/"
@@ -52,7 +39,10 @@ function App() {
                   path="store"
                   element={
                     <ProtectedRoute>
-                      <Store />
+                      <Store
+                        soldProducts={soldProducts}
+                        setSoldProducts={setSoldProducts}
+                      />
                     </ProtectedRoute>
                   }
                 />
@@ -68,7 +58,10 @@ function App() {
                   path="cart"
                   element={
                     <ProtectedRoute>
-                      <Cart />
+                      <Cart
+                        soldProducts={soldProducts}
+                        setSoldProducts={setSoldProducts}
+                      />
                     </ProtectedRoute>
                   }
                 />
@@ -76,7 +69,7 @@ function App() {
                   path="profile"
                   element={
                     <ProtectedRoute>
-                      <Profile />
+                      <Profile soldProducts={soldProducts} />
                     </ProtectedRoute>
                   }
                 />

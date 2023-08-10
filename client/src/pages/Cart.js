@@ -1,26 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../CartContext";
 import { useProducts } from "../ProductsContex";
 import { editData, deleteData, deleteAllData, addData } from "../apiUtils";
 import styles from "./Cart.module.css";
 
-function Cart() {
+function Cart({ soldProducts, setSoldProducts }) {
   const navigate = useNavigate();
 
   const { cartProducts, setCartProducts } = useCart();
   const { allProducts, setAllProducts } = useProducts();
-  const [soldProducts, setSoldProducts] = useState([]);
-  //const [user, setUser] = useState([]);
+  //const [soldProducts, setSoldProducts] = useState([]);
 
   let user = JSON.parse(localStorage.getItem("currentUser"));
   const totalPrice = cartProducts.reduce((total, product) => {
     return total + parseFloat(product.price) * product.quantity;
   }, 0);
-
-  // useEffect(() => {
-  //   setUser(JSON.parse(localStorage.getItem("currentUser")));
-  // }, []);
 
   useEffect(() => {
     localStorage.setItem("allProducts", JSON.stringify(allProducts));
@@ -30,13 +25,9 @@ function Cart() {
     localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
   }, [cartProducts]);
 
-  // useEffect(() => {
-  //   localStorage.setItem("currentUser", JSON.stringify(user));
-  // }, [user]);
-
   useEffect(() => {
-    localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
-  }, [cartProducts]);
+    localStorage.setItem("soldProducts", JSON.stringify(soldProducts));
+  }, [soldProducts]);
 
   const removeFromCart = (product) => {
     let url = `http://localhost:3000/cart/${user.id}`;

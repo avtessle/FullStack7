@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import styles from "./Login.module.css";
 import { Link } from "react-router-dom";
 
-function Login({ setCurrentName }) {
+function Login() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
@@ -13,11 +13,6 @@ function Login({ setCurrentName }) {
     localStorage.clear();
   }, [name]);
 
-  // if (localStorage.getItem("currentUser")) {
-  //   localStorage.clear();
-  // }
-
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !password) {
@@ -44,7 +39,6 @@ function Login({ setCurrentName }) {
       })
       .then((user) => {
         localStorage.setItem("currentUser", JSON.stringify(user));
-        setCurrentName(name);
         navigate(`/store`);
       })
       .catch((error) => {

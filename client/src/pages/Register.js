@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Login.module.css";
 
-function Register({ setCurrentName }) {
+function Register() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
@@ -36,7 +36,6 @@ function Register({ setCurrentName }) {
       })
       .then((user) => {
         localStorage.setItem("currentUser", JSON.stringify(user));
-        setCurrentName(name);
         navigate(`/store`);
       })
       .catch((error) => {

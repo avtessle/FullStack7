@@ -7,27 +7,34 @@ import ringsImage from "../images/rings.jpeg";
 import necklacesImage from "../images/necklaces.jpeg";
 import styles from "./Store.module.css";
 
-function Store() {
+function Store({ soldProducts, setSoldProducts }) {
   const navigate = useNavigate();
   const { cartProducts, setCartProducts } = useCart();
   const { allProducts, setAllProducts } = useProducts();
   const user = JSON.parse(localStorage.getItem("currentUser"));
 
   useEffect(() => {
-    let savedProducts = localStorage.getItem("allProducts");
-    if (!savedProducts) {
-      const url = `http://localhost:3000/store`;
-      getData(url, setAllProducts, navigate);
-      localStorage.setItem("allProducts", JSON.stringify(allProducts));
-    }
+    const fetchData = async (url, setData, storageKey) => {
+      const savedData = localStorage.getItem(storageKey);
 
-    let savedCartProducts = localStorage.getItem("cartProducts");
-    if (!savedCartProducts) {
-      const url = `http://localhost:3000/cart/${user.id}`;
-      getData(url, setCartProducts, navigate);
-      localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
-    }
-  }, []);
+      if (!savedData) {
+        const data = await getData(url, setData, navigate);
+        localStorage.setItem(storageKey, JSON.stringify(data));
+      }
+    };
+
+    fetchData(`http://localhost:3000/store`, setAllProducts, "allProducts");
+    fetchData(
+      `http://localhost:3000/cart/${user.id}`,
+      setCartProducts,
+      "cartProducts"
+    );
+    fetchData(
+      `http://localhost:3000/purchases/${user.id}`,
+      setSoldProducts,
+      "soldProducts"
+    );
+  }, [user.id]);
 
   useEffect(() => {
     localStorage.setItem("allProducts", JSON.stringify(allProducts));
@@ -36,6 +43,10 @@ function Store() {
   useEffect(() => {
     localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
   }, [cartProducts]);
+
+  useEffect(() => {
+    localStorage.setItem("soldProducts", JSON.stringify(soldProducts));
+  }, [soldProducts]);
 
   const isManager = user.status === "admin";
 
