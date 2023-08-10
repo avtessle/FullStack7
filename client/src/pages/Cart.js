@@ -106,32 +106,40 @@ function Cart({ soldProducts, setSoldProducts }) {
   return (
     <div className={styles["cart-container"]}>
       <h1 className={styles["cart-heading"]}>{user.name}'s Cart</h1>
-      <ul className={styles["cart-list"]}>
-        {cartProducts.map((item) => (
-          <li key={item.productId} className={styles["cart-item"]}>
-            <div className={styles["cart-item-description"]}>
-              <img src={item.image} alt={item.description} />
-              <p>{item.description}</p>
-              <p>Price: {item.price}</p>
-              <p>Quantity: {item.quantity}</p>
-            </div>
-            <button
-              className={styles["cart-item-remove"]}
-              onClick={() => removeFromCart(item)}
-            >
-              Remove
+      {cartProducts.length > 0 ? (
+        <ul className={styles["cart-list"]}>
+          {cartProducts.map((item) => (
+            <li key={item.productId} className={styles["cart-item"]}>
+              <div className={styles["cart-item-description"]}>
+                <img src={item.image} alt={item.description} />
+                <p>{item.description}</p>
+                <p>Price: {item.price}</p>
+                <p>Quantity: {item.quantity}</p>
+              </div>
+              <button
+                className={styles["cart-item-remove"]}
+                onClick={() => removeFromCart(item)}
+              >
+                Remove
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className={styles["cart-empty"]}>Your cart is empty.</p>
+      )}
+      {cartProducts.length > 0 && (
+        <div>
+          <h3 className={styles["cart-total"]}>
+            Total: {parseFloat(totalPrice).toFixed(2)}
+          </h3>
+          <div className={styles["cart-buttons"]}>
+            <button className={styles["cart-button"]} onClick={checkout}>
+              Checkout
             </button>
-          </li>
-        ))}
-      </ul>
-      <h3 className={styles["cart-total"]}>
-        Total: {parseFloat(totalPrice).toFixed(2)}
-      </h3>
-      <div className={styles["cart-buttons"]}>
-        <button className={styles["cart-button"]} onClick={checkout}>
-          Checkout
-        </button>
-      </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
