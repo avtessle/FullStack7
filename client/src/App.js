@@ -10,6 +10,7 @@ import Error from "./pages/Error";
 import Store from "./pages/Store";
 import Category from "./pages/Category";
 import Cart from "./pages/Cart";
+import Profile from "./pages/Profile";
 import { CartProvider } from "./CartContext";
 import { ProductsProvider } from "./ProductsContex";
 
@@ -68,6 +69,14 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <Cart />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="profile"
+                  element={
+                    <ProtectedRoute>
+                      <Profile />
                     </ProtectedRoute>
                   }
                 />

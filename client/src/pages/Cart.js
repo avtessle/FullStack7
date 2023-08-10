@@ -11,15 +11,28 @@ function Cart() {
   const { cartProducts, setCartProducts } = useCart();
   const { allProducts, setAllProducts } = useProducts();
   const [soldProducts, setSoldProducts] = useState([]);
+  //const [user, setUser] = useState([]);
 
-  const user = JSON.parse(localStorage.getItem("currentUser"));
+  let user = JSON.parse(localStorage.getItem("currentUser"));
   const totalPrice = cartProducts.reduce((total, product) => {
     return total + parseFloat(product.price) * product.quantity;
   }, 0);
 
+  // useEffect(() => {
+  //   setUser(JSON.parse(localStorage.getItem("currentUser")));
+  // }, []);
+
   useEffect(() => {
     localStorage.setItem("allProducts", JSON.stringify(allProducts));
   }, [allProducts]);
+
+  useEffect(() => {
+    localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
+  }, [cartProducts]);
+
+  // useEffect(() => {
+  //   localStorage.setItem("currentUser", JSON.stringify(user));
+  // }, [user]);
 
   useEffect(() => {
     localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
@@ -72,9 +85,27 @@ function Cart() {
     });
 
     //add to soldProducts
-    // cartProducts.forEach((product) => {
-    //   addData(url, product, setSoldProducts, navigate);
-    // });
+    url = `http://localhost:3000/purchases/${user.id}`;
+    cartProducts.forEach((product) => {
+      addData(
+        url,
+        { ...product, purchaseId: user.purchases + 1 },
+        setSoldProducts,
+        navigate
+      );
+    });
+
+    //update user purchases count
+    url = `http://localhost:3000/purchases/${user.id}`;
+    editData(
+      url,
+      { ...user, purchases: user.purchases + 1 },
+      null,
+      ["id"],
+      navigate
+    );
+    user.purchases = user.purchases + 1;
+    localStorage.setItem("currentUser", JSON.stringify(user));
 
     //delete all from cartProducts
     url = `http://localhost:3000/cart/${user.id}`;

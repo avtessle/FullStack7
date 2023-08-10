@@ -12,9 +12,13 @@ router.post("/", (req, res) => {
   const passwordQuery = `SELECT * FROM passwords WHERE name = ? LIMIT 1`;
   const passwordValues = [name];
 
-  req.sqlConnect(passwordQuery, passwordValues)
+  req
+    .sqlConnect(passwordQuery, passwordValues)
     .then((passwordResults) => {
-      if (passwordResults.length === 1 && passwordResults[0].password === password) {
+      if (
+        passwordResults.length === 1 &&
+        passwordResults[0].password === password
+      ) {
         const userId = passwordResults[0].id;
 
         const userQuery = `SELECT * FROM users WHERE id = ? LIMIT 1`;
@@ -34,7 +38,7 @@ router.post("/", (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      res.status(401).send(err.message); // You can adjust the status code accordingly
+      res.status(401).send(err.message);
     });
 });
 

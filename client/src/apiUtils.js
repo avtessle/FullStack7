@@ -36,7 +36,7 @@ export const addData = async (url, data, setData, navigate) => {
   }
 };
 
-//id=id type to delete by
+//id=id type to edit by
 export const editData = async (url, data, setData, id, navigate) => {
   const requestOptions = {
     method: "PUT",
@@ -50,14 +50,16 @@ export const editData = async (url, data, setData, id, navigate) => {
     const response = await fetch(url, requestOptions);
     if (response.status === 200) {
       const updatedRecord = await response.json();
-      setData((prevData) => {
-        return prevData.map((record) => {
-          if (record[id] === updatedRecord[id]) {
-            return updatedRecord;
-          }
-          return record;
+      if (setData !== null) {
+        setData((prevData) => {
+          return prevData.map((record) => {
+            if (record[id] === updatedRecord[id]) {
+              return updatedRecord;
+            }
+            return record;
+          });
         });
-      });
+      }
     }
   } catch (error) {
     console.error("Error updating data:", error);

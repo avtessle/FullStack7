@@ -7,11 +7,12 @@ const loginRouter = require("./routes/login");
 const registerRouter = require("./routes/register");
 const storeRouter = require("./routes/store");
 const cartRouter = require("./routes/cart");
+const purchasesRouter = require("./routes/purchases");
 
 app.use(express.json());
 app.use(cors());
 
-const myPassword = "lq2p0J8h";
+const myPassword = "avigayiltess";
 const myDatabase = "fullStack7";
 
 function sqlConnect(query, values = []) {
@@ -64,6 +65,7 @@ app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/store", storeRouter);
 app.use("/cart", cartRouter);
+app.use("/purchases", purchasesRouter);
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");

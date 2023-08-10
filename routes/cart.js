@@ -29,7 +29,7 @@ router.post("/:userId", (req, res) => {
 
   req
     .sqlConnect(query, values)
-    .then((results) => {
+    .then(() => {
       res.status(200).json(product);
     })
     .catch((err) => {
