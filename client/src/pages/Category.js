@@ -1,10 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { addData, editData, deleteData } from "../apiUtils";
-import "./Category.css";
 import { useCart } from "../CartContext";
 import { useProducts } from "../ProductsContex";
 import AddProductPopup from "./AddProductPopup";
+import styles from "./Category.module.css";
 
 function Category() {
   const navigate = useNavigate();
@@ -76,43 +76,6 @@ function Category() {
     }
   };
 
-  /*  const addProductToStore = async (product) => {
-    console.log(product);
-    const description = product.description;
-    const similarProduct = jewelry.find(
-      (product) => product.description === description
-    );
-
-    let url; 
-    let updatedProduct;
-    let newProduct ;
-
-    if (similarProduct) {
-      updatedProduct = {
-        ...similarProduct,
-        quantity: similarProduct.quantity + 1,
-      };
-      url = `http://localhost:3000/store/${product.id}`;
-      editData(url, updatedProduct, setAllProducts, "id", navigate);
-    }
-   
-    else {
-      newProduct = {
-        productId: product.id,
-        userId: user.id,
-        quantity: 1,
-        category: product.category,
-        description: product.description,
-        price: product.price,
-        image: product.image,
-      };
-      url = `http://localhost:3000/store/${product}`;
-
-      addData(url, newProduct, setAllProducts, navigate);
-    }
- 
-  }; */
-
   const addProductToStore = async (product) => {
     console.log(product);
     const description = product.description;
@@ -152,35 +115,38 @@ function Category() {
   const isManager = user.status === "admin";
 
   return (
-    <div className="category-container">
-      <h2 className="category-heading">{category}</h2>
+    <div className={styles["category-container"]}>
+      <h2 className={styles["category-heading"]}>{category}</h2>
       {isManager && (
-        <button className="add-button" onClick={() => setIsPopupOpen(true)}>
+        <button
+          className={styles["add-button"]}
+          onClick={() => setIsPopupOpen(true)}
+        >
           Add {category}
         </button>
       )}
-      <ul className="category-list">
+      <ul className={styles["category-list"]}>
         {jewelry.map((item) => (
-          <li key={item.id} className="category-item">
+          <li key={item.id} className={styles["category-item"]}>
             <img
               src={item.image}
               alt={item.description}
-              className="category-image"
+              className={styles["category-image"]}
             />
-            <div className="category-title">{item.description}</div>
-            <div>Price: {item.price}</div>
+            <div className={styles["category-title"]}>{item.description}</div>
+            <div>{item.price}$</div>
             <div>{item.quantity} left</div>
-            <div className="button-group">
+            <div className={styles["button-group"]}>
               {isManager && (
                 <button
-                  className="delete-button"
+                  className={styles["delete-button"]}
                   onClick={() => deleteProductFromStore(item)}
                 >
                   Delete
                 </button>
               )}
               <button
-                className="add-to-cart-button"
+                className={styles["add-to-cart-button"]}
                 onClick={() => addToCart(item)}
               >
                 Add to cart
@@ -189,14 +155,6 @@ function Category() {
           </li>
         ))}
       </ul>
-      {/* {isManager && (
-            <button
-              className="add-button"
-              onClick={() => addProductToStore()}
-            >
-              Add {Category}
-            </button>
-          )} */}
       <AddProductPopup
         isOpen={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}

@@ -6,7 +6,7 @@ import { getData } from "../apiUtils";
 import ringsImage from "../images/rings.jpeg";
 import necklacesImage from "../images/necklaces.jpeg";
 import styles from "./Store.module.css";
-import "./Store.css";
+// import "./Store.css";
 
 function Store({ soldProducts, setSoldProducts }) {
   const navigate = useNavigate();
@@ -49,17 +49,20 @@ function Store({ soldProducts, setSoldProducts }) {
     localStorage.setItem("soldProducts", JSON.stringify(soldProducts));
   }, [soldProducts]);
 
-  const isManager = user.status === "admin";
-
   return (
     <div className={styles["store-container"]}>
-      {/* <h1 className={styles["welcome-message"]}>Hello, {user.name}!</h1> */}
-      <div id="ourStory">
-        <h1 class="menu">Our Story</h1>
-        <p>We always pride ourselves in our ability to create wonderful products. This we achieve through the skill and artistry of our highly trained staff and the use of the very finest ingredients.
-            We are a Family-run Cafe in the heart of Bradford, with home cooking at the core of the business. The emphasis has been on quality and service. We go to great lengths to select the very best ingredients and where possible, local produce form the foundations of the menu. We are passionately devoted to our culinary success.
+      <div className={styles["our-story"]}>
+        <h1>Our Story</h1>
+        <p>
+          Here we aim to bring precious human bonding into our jewelry,
+          delivering a compelling message of love, friendship, and empowerment.
+          Our products speak the unspoken words to your loved ones, reminding
+          them of the sacred inner strength each person carries within
+          themselves. we believe that quality jewellery shouldn’t be expensive,
+          must be 100% hypoallergenic, and that every woman should have access
+          to the perfect piece to elevate any look.
         </p>
-    </div>
+      </div>
       <div className={styles["category-links"]}>
         <NavLink to="/store/necklaces" className={styles["category-link"]}>
           <div className={styles["category-title"]}>Necklaces</div>

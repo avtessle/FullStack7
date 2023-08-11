@@ -3,8 +3,7 @@
 .navbar {
   display: flex;
   justify-content: center;
-  margin-bottom: 30px;
-  background-color: burlywood;
+  background-color: rgba(192, 192, 192, 0.5);
   align-items: center;
 }
 
@@ -12,19 +11,26 @@
   text-decoration: none;
   font-size: 20px;
   color: white;
-  padding: 30px 80px;
+  font-size: 25px;
+  font-family: Gabriola;
+  padding: 30px 60px;
   display: flex;
-  align-items: center;
 }
 
 .link:hover {
-  background-color: rgba(0, 0, 205, 0.103);
+  background-color: rgba(192, 192, 192, 0.447);
+  color: rgb(17, 34, 83);
 }
 
 .iconImage {
   width: 30px;
   height: 30px;
-  margin: auto 10px;
+  margin: auto 20px;
+  cursor: pointer;
+}
+
+.iconImage:hover {
+  scale: 1.2;
 }
 
 @media screen and (max-width: 768px) {

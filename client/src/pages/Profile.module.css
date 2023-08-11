@@ -1,75 +1,29 @@
 .userProfile {
-  background-color: #f9f9f9;
-  border: 1px solid #e0e0e0;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 80px 0;
+  background-color: rgba(255, 255, 255, 0.181);
+  padding: 20px 80px;
+  font-family: Gabriola;
 }
 
-.userName {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
+.userProfile h1 {
+  color: white;
+  font-size: 50px;
 }
 
-.userInfo {
-  font-size: 1.2rem;
-  margin: 8px 0;
+.userProfile * {
+  font-weight: lighter;
+  color: silver;
+  margin: 0;
+  font-size: 25px;
 }
 
 .soldProducts {
   background-color: #f9f9f9;
-  border: 1px solid #e0e0e0;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 50px;
 }
 
 .soldProductsTitle {
-  font-size: 1.8rem;
-  margin-bottom: 20px;
+  font-size: 30px;
+  margin-bottom: 50px;
+  color: rgb(17, 34, 83);
 }
-
-.purchaseContainer {
-  margin-bottom: 20px;
-}
-
-.purchaseTitle {
-  font-size: 1.4rem;
-  margin-bottom: 10px;
-}
-
-.productList {
-  list-style: none;
-  padding: 0;
-}
-
-.productItem {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.productInfo {
-  flex: 1;
-}
-
-.productId {
-  font-weight: bold;
-}
-
-.productDescription {
-  margin: 5px 0;
-  color: #555;
-}
-
-.productQuantity {
-  margin: 5px 0;
-}
-
-/* Add more styling for other product information if needed */

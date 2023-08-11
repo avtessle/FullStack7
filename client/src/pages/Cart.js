@@ -105,16 +105,22 @@ function Cart({ soldProducts, setSoldProducts }) {
 
   return (
     <div className={styles["cart-container"]}>
-      <h1 className={styles["cart-heading"]}>{user.name}'s Cart</h1>
+      <h1 className={styles["cart-heading"]}>My Cart</h1>
       {cartProducts.length > 0 ? (
         <ul className={styles["cart-list"]}>
           {cartProducts.map((item) => (
             <li key={item.productId} className={styles["cart-item"]}>
               <div className={styles["cart-item-description"]}>
-                <img src={item.image} alt={item.description} />
-                <p>{item.description}</p>
-                <p>Price: {item.price}</p>
-                <p>Quantity: {item.quantity}</p>
+                <img
+                  src={item.image}
+                  alt={item.description}
+                  className={styles["cart-item-image"]}
+                />
+                <div>
+                  <p>{item.description}</p>
+                  <p>{item.price}$</p>
+                  <p>Quantity: {item.quantity}</p>
+                </div>
               </div>
               <button
                 className={styles["cart-item-remove"]}
@@ -129,9 +135,9 @@ function Cart({ soldProducts, setSoldProducts }) {
         <p className={styles["cart-empty"]}>Your cart is empty.</p>
       )}
       {cartProducts.length > 0 && (
-        <div>
+        <div className={styles["checkout"]}>
           <h3 className={styles["cart-total"]}>
-            Total: {parseFloat(totalPrice).toFixed(2)}
+            Total: {parseFloat(totalPrice).toFixed(2)}$
           </h3>
           <div className={styles["cart-buttons"]}>
             <button className={styles["cart-button"]} onClick={checkout}>

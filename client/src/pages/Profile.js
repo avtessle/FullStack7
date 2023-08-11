@@ -1,4 +1,4 @@
-import styles from "./Cart.module.css";
+import styles from "./Profile.module.css";
 
 function Profile({ soldProducts }) {
   const user = JSON.parse(localStorage.getItem("currentUser"));
@@ -6,23 +6,26 @@ function Profile({ soldProducts }) {
   const isManager = user.status === "admin";
   const groupedProducts = {};
 
-  const sortedSoldProducts = [...soldProducts].sort((a, b) => b.quantity - a.quantity);
+  const sortedSoldProducts = [...soldProducts].sort(
+    (a, b) => b.quantity - a.quantity
+  );
 
   const getProductDescription = (productId) => {
     const product = allProducts.find((p) => p.id === productId);
-    return product ? product.description : console.warn(
-      `Product with ID not found in allProducts.`); 
+    return product
+      ? product.description
+      : console.warn(`Product with ID not found in allProducts.`);
   };
 
   soldProducts.forEach((product) => {
     if (!groupedProducts[product.purchaseId]) {
       groupedProducts[product.purchaseId] = [];
     }
-    
+
     const correspondingProduct = allProducts.find(
       (p) => p.id === product.productId
     );
-  
+
     if (correspondingProduct) {
       groupedProducts[product.purchaseId].push({
         ...product,
@@ -34,56 +37,49 @@ function Profile({ soldProducts }) {
       );
     }
   });
-  
 
   return (
     <div>
       <div className={styles.userProfile}>
-        <h2 className={styles.userName}>User Profile</h2>
-        <div className={styles.userInfo}>
-          <strong>Name:</strong> {user.name}
-        </div>
-        <div className={styles.userInfo}>
-          <strong>Email:</strong> {user.email}
-        </div>
-        <div className={styles.userInfo}>
-          <strong>Phone:</strong> {user.phone}
-        </div>
-        <div className={styles.userInfo}>
-          <strong>Status:</strong> {user.status}
-        </div>
+        <h1>{user.name}</h1>
+        <h3>{user.email}</h3>
+        <h3> {user.phone}</h3>
+        <h3> {user.status}</h3>
       </div>
 
       <div className={styles.soldProducts}>
-        {!isManager&&(
+        {!isManager && (
           <div>
-        <h2 className={styles.soldProductsTitle}>Shopping history</h2>
-        {Object.keys(groupedProducts).map((purchaseId) => (
-          <div key={purchaseId} className={styles.purchaseContainer}>
-            <h3 className={styles.purchaseTitle}>Purchase: {purchaseId}</h3>
-            <ul className={styles.productList}>
-              {groupedProducts[purchaseId].map((product, index) => (
-                <li key={index} className={styles.productItem}>
-                  <p>{product.description}</p>
-                  <p>Quantity: {product.quantity}</p>
+            <h2 className={styles.soldProductsTitle}>Shopping history</h2>
+            {Object.keys(groupedProducts).map((purchaseId) => (
+              <div key={purchaseId} className={styles.purchaseContainer}>
+                <h3 className={styles.purchaseTitle}>Purchase: {purchaseId}</h3>
+                <ul className={styles.productList}>
+                  {groupedProducts[purchaseId].map((product, index) => (
+                    <li key={index} className={styles.productItem}>
+                      <p>{product.description}</p>
+                      <p>Quantity: {product.quantity}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {isManager && (
+          <div>
+            <h2 className={styles.soldProductsTitle}>Best Sellers</h2>
+            <ul>
+              {sortedSoldProducts.map((product) => (
+                <li key={product.id}>
+                  {getProductDescription(product.productId)} - Quantity:{" "}
+                  {product.quantity}
                 </li>
               ))}
             </ul>
           </div>
-        ))}
-        </div>)}
-
-        {isManager&&(
-          <div>
-            <h2 className={styles.soldProductsTitle}>Best Sellers</h2>
-             <ul>
-        {sortedSoldProducts.map((product) => (
-          <li key={product.id}>
-            {getProductDescription(product.productId)} - Quantity: {product.quantity}
-          </li>
-        ))}
-      </ul>
-          </div>)}
+        )}
       </div>
     </div>
   );

@@ -10,22 +10,21 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-family: Gabriola;
 }
 
 .form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 5px;
-  padding: 60px 220px;
-  background-color: #fff;
+  margin-right: 600px;
 }
 
 .form h5 {
-  font-size: 32px;
-  margin-bottom: 40px;
+  font-size: 40px;
+  margin-bottom: 60px;
   font-weight: bold;
-  color: mediumblue;
+  color: beige;
   margin-top: 20px;
 }
 
@@ -41,7 +40,7 @@
   width: 300px;
   font-size: 18px;
   border: none;
-  background-color: #e6e6e6;
+  background-color: beige;
   border-radius: 4px;
 }
 
@@ -53,14 +52,15 @@
   border: none;
   cursor: pointer;
   border-radius: 4px;
-  margin: 5px;
+  margin: 7px;
 }
 
 .btn {
-  margin-top: 35px;
+  margin-top: 40px;
   height: 50px;
   width: 200px;
-  background-color: mediumblue;
+  background-color: beige;
+  color: rgb(30, 31, 101);
   font-size: 18px;
 }
 
@@ -69,15 +69,15 @@
   text-decoration: none;
   height: 40px;
   width: 100px;
-  background-color: #e6e6e6;
-  color: #000000;
+  background-color: silver;
+  color: rgb(30, 31, 101);
   font-size: 14px;
 }
 
 .btn:hover {
-  background-color: rgba(0, 0, 205, 0.515);
+  background-color: rgb(204, 204, 183);
 }
 
 .btn-link:hover {
-  background-color: #a0a0a096;
+  background-color: rgba(249, 246, 197, 0.489);
 }
