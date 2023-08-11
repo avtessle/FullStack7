@@ -10,7 +10,6 @@ function Cart({ soldProducts, setSoldProducts }) {
 
   const { cartProducts, setCartProducts } = useCart();
   const { allProducts, setAllProducts } = useProducts();
-  //const [soldProducts, setSoldProducts] = useState([]);
 
   let user = JSON.parse(localStorage.getItem("currentUser"));
   const totalPrice = cartProducts.reduce((total, product) => {
