@@ -1,15 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../CartContext";
 import { useProducts } from "../ProductsContex";
 import { editData, deleteData, deleteAllData, addData } from "../apiUtils";
 import styles from "./Cart.module.css";
+import emptyCartImage from "../images/empty-cart.png";
 
 function Cart({ soldProducts, setSoldProducts }) {
   const navigate = useNavigate();
 
   const { cartProducts, setCartProducts } = useCart();
   const { allProducts, setAllProducts } = useProducts();
+  const [isCheckout, setIsCheckout] = useState(false);
 
   let user = JSON.parse(localStorage.getItem("currentUser"));
   const totalPrice = cartProducts.reduce((total, product) => {
@@ -27,6 +29,15 @@ function Cart({ soldProducts, setSoldProducts }) {
   useEffect(() => {
     localStorage.setItem("soldProducts", JSON.stringify(soldProducts));
   }, [soldProducts]);
+
+  useEffect(() => {
+    const soldOutOrNotEnough = cartProducts.some((item) => {
+      const product = allProducts.find((prod) => prod.id === item.productId);
+      return product.quantity === 0 || item.quantity > product.quantity;
+    });
+
+    setIsCheckout(soldOutOrNotEnough);
+  }, [cartProducts, allProducts]);
 
   const removeFromCart = (product) => {
     let url = `http://localhost:3000/cart/${user.id}`;
@@ -98,7 +109,7 @@ function Cart({ soldProducts, setSoldProducts }) {
     localStorage.setItem("currentUser", JSON.stringify(user));
 
     //delete all from cartProducts
-    url = `http://localhost:3000/cart/${user.id}`;
+    url = `http://localhost:3000/cart/user/${user.id}`;
     deleteAllData(url, setCartProducts, navigate);
   };
 
@@ -107,42 +118,64 @@ function Cart({ soldProducts, setSoldProducts }) {
       <h1 className={styles["cart-heading"]}>My Cart</h1>
       {cartProducts.length > 0 ? (
         <ul className={styles["cart-list"]}>
-          {cartProducts.map((item) => (
-            <li key={item.productId} className={styles["cart-item"]}>
-              <div className={styles["cart-item-description"]}>
-                <img
-                  src={item.image}
-                  alt={item.description}
-                  className={styles["cart-item-image"]}
-                />
-                <div>
-                  <p>{item.description}</p>
-                  <p>{item.price}$</p>
-                  <p>Quantity: {item.quantity}</p>
+          {cartProducts.map((item) => {
+            const product = allProducts.find(
+              (prod) => prod.id === item.productId
+            );
+            const isSoldOut = product.quantity === 0;
+            const notEnough = product.quantity < item.quantity;
+
+            return (
+              <li key={item.productId} className={styles["cart-item"]}>
+                <div className={styles["cart-item-description"]}>
+                  <img
+                    src={item.image}
+                    alt={item.description}
+                    className={styles["cart-item-image"]}
+                  />
+                  <div>
+                    <p>{item.description}</p>
+                    <p>{item.price}$</p>
+                    <p>Quantity: {item.quantity}</p>
+                    {isSoldOut && <p>Sold Out</p>}
+                    {notEnough && !isSoldOut && (
+                      <p className={styles["sold-out"]}>
+                        Cannot be purchased in this quantity
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <button
-                className={styles["cart-item-remove"]}
-                onClick={() => removeFromCart(item)}
-              >
-                Remove
-              </button>
-            </li>
-          ))}
+                <button
+                  className={styles["cart-item-remove"]}
+                  onClick={() => removeFromCart(item)}
+                >
+                  Remove
+                </button>
+              </li>
+            );
+          })}
         </ul>
       ) : (
-        <p className={styles["cart-empty"]}>Your cart is empty.</p>
+        <div className={styles["cart-empty"]}>
+          <p>Your cart is empty...</p>
+          <img src={emptyCartImage} />
+        </div>
       )}
       {cartProducts.length > 0 && (
         <div className={styles["checkout"]}>
           <h3 className={styles["cart-total"]}>
             Total: {parseFloat(totalPrice).toFixed(2)}$
           </h3>
-          <div className={styles["cart-buttons"]}>
-            <button className={styles["cart-button"]} onClick={checkout}>
-              Checkout
-            </button>
-          </div>
+
+          <button
+            className={`${styles["checkout-button"]} ${
+              isCheckout ? styles["disabled-button"] : ""
+            }`}
+            onClick={checkout}
+            disabled={isCheckout}
+          >
+            Checkout
+          </button>
         </div>
       )}
     </div>

@@ -54,9 +54,9 @@ router.put("/:userId", (req, res) => {
     });
 });
 
-router.delete("/:userId/:productId", (req, res) => {
-  const query = `DELETE from cart_products WHERE productId = ? And userId = ?`;
-  const values = [req.params.productId, req.params.userId];
+router.delete("/product/:productId", (req, res) => {
+  const query = `DELETE from cart_products WHERE productId = ?`;
+  const values = [req.params.productId];
 
   req
     .sqlConnect(query, values)
@@ -69,9 +69,24 @@ router.delete("/:userId/:productId", (req, res) => {
     });
 });
 
-router.delete("/:userId", (req, res) => {
+router.delete("/user/:userId", (req, res) => {
   const query = `DELETE from cart_products WHERE userId = ?`;
   const values = [req.params.userId];
+
+  req
+    .sqlConnect(query, values)
+    .then(() => {
+      res.status(200).json({ message: "Cart Product deleted successfully" });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("An error occurred");
+    });
+});
+
+router.delete("/:userId/:productId", (req, res) => {
+  const query = `DELETE from cart_products WHERE productId = ? And userId = ?`;
+  const values = [req.params.productId, req.params.userId];
 
   req
     .sqlConnect(query, values)

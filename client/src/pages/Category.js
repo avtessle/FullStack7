@@ -68,8 +68,13 @@ function Category() {
   };
 
   const deleteProductFromStore = async (product) => {
+    //delete from cart
+    let url = `http://localhost:3000/cart/product/${product.id}`;
+    deleteData(url, product, setCartProducts, ["productId"], navigate);
+
+    //delete from store
     try {
-      const url = `http://localhost:3000/store/${product.id}`;
+      url = `http://localhost:3000/store/${product.id}`;
       await deleteData(url, product, setAllProducts, ["id"], navigate);
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -146,8 +151,11 @@ function Category() {
                 </button>
               )}
               <button
-                className={styles["add-to-cart-button"]}
+                className={`${styles["add-to-cart-button"]} ${
+                  item.quantity === 0 ? styles["disabled-button"] : ""
+                }`}
                 onClick={() => addToCart(item)}
+                disabled={item.quantity === 0}
               >
                 Add to cart
               </button>

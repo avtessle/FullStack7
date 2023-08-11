@@ -6,7 +6,6 @@ import { getData } from "../apiUtils";
 import ringsImage from "../images/rings.jpeg";
 import necklacesImage from "../images/necklaces.jpeg";
 import styles from "./Store.module.css";
-// import "./Store.css";
 
 function Store({ soldProducts, setSoldProducts }) {
   const navigate = useNavigate();
