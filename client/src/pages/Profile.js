@@ -1,6 +1,7 @@
 import styles from "./Profile.module.css";
 
 function Profile({ soldProducts }) {
+  console.log(soldProducts);
   const user = JSON.parse(localStorage.getItem("currentUser"));
   const allProducts = JSON.parse(localStorage.getItem("allProducts"));
   const isManager = user.status === "admin";

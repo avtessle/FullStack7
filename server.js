@@ -12,7 +12,7 @@ const purchasesRouter = require("./routes/purchases");
 app.use(express.json());
 app.use(cors());
 
-const myPassword = "avigayiltess";
+const myPassword = "lq2p0J8h";
 const myDatabase = "fullStack7";
 
 function sqlConnect(query, values = []) {

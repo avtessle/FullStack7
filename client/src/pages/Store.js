@@ -30,11 +30,17 @@ function Store({ soldProducts, setSoldProducts }) {
       "cartProducts"
     );
     fetchData(
-      `http://localhost:3000/purchases/${user.id}`,
+      `http://localhost:3000/purchases`,
       setSoldProducts,
       "soldProducts"
     );
+  
   }, [user.id]);
+
+  useEffect(() => {
+    console.log(soldProducts); // Log here after fetching is complete
+    localStorage.setItem("allProducts", JSON.stringify(allProducts));
+  }, [soldProducts, allProducts]);
 
   useEffect(() => {
     localStorage.setItem("allProducts", JSON.stringify(allProducts));

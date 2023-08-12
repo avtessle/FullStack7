@@ -90,7 +90,7 @@ function Cart({ soldProducts, setSoldProducts }) {
     cartProducts.forEach((product) => {
       addData(
         url,
-        { ...product, purchaseId: user.purchases + 1 },
+        { ...product },
         setSoldProducts,
         navigate
       );
