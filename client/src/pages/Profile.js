@@ -50,19 +50,27 @@ function Profile({ soldProducts }) {
             <h2 className={styles.soldProductsTitle}>Shopping history</h2>
             {Object.keys(groupedProducts).map((purchaseId) => (
               <div key={purchaseId} className={styles.purchaseContainer}>
-                <h3 className={styles.purchaseTitle}>Purchase {purchaseId}</h3>
-                <h4>
-                  {
-                    new Date(groupedProducts[purchaseId][0].date)
-                      .toISOString()
-                      .split("T")[0]
-                  }
-                </h4>
+                <div className={styles.purchaseHeader}>
+                  <h3 className={styles.purchaseTitle}>
+                    Purchase {purchaseId}
+                  </h3>
+                  <h4 className={styles.purchaseDate}>
+                    {
+                      new Date(groupedProducts[purchaseId][0].date)
+                        .toISOString()
+                        .split("T")[0]
+                    }
+                  </h4>
+                </div>
                 <ul className={styles.productList}>
                   {groupedProducts[purchaseId].map((product, index) => (
                     <li key={index} className={styles.productItem}>
-                      <p>{product.description}</p>
-                      <p>Quantity: {product.quantity}</p>
+                      <p className={styles.productDescription}>
+                        {product.description}
+                      </p>
+                      <p className={styles.productQuantity}>
+                        Quantity: {product.quantity}
+                      </p>
                     </li>
                   ))}
                 </ul>
