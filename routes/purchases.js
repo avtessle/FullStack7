@@ -18,9 +18,9 @@ router.get("/:userId", (req, res) => {
 
 router.get("/", (req, res) => {
   const query = `SELECT * FROM sold_products ORDER BY quantity DESC`;
-  
+
   req
-    .sqlConnect(query) 
+    .sqlConnect(query)
     .then((results) => {
       res.status(200).json(results);
     })
@@ -32,8 +32,9 @@ router.get("/", (req, res) => {
 
 router.post("/:userId", async function (req, res) {
   const product = req.body;
-  const query = `INSERT INTO sold_products (productId, userId, date, quantity) VALUES (?, ?, ?, ?)`;
+  const query = `INSERT INTO sold_products (purchaseId,productId, userId, date, quantity) VALUES (?, ?, ?, ?,?)`;
   const values = [
+    product.purchaseId,
     product.productId,
     product.userId,
     new Date(),
@@ -50,7 +51,6 @@ router.post("/:userId", async function (req, res) {
       res.status(500).send("An error occurred");
     });
 });
-
 
 //update user purchases in users
 router.put("/:userId", (req, res) => {

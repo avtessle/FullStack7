@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { addData, editData, deleteData } from "../apiUtils";
+import { addData, editData } from "../apiUtils";
 import { useCart } from "../CartContext";
 import { useProducts } from "../ProductsContex";
 import AddProductPopup from "./AddProductPopup";
@@ -68,14 +68,16 @@ function Category() {
   };
 
   const deleteProductFromStore = async (product) => {
-    //delete from cart
-    let url = `http://localhost:3000/cart/product/${product.id}`;
-    deleteData(url, product, setCartProducts, ["productId"], navigate);
-
-    //delete from store
+    //quantity=0 in store
     try {
-      url = `http://localhost:3000/store/${product.id}`;
-      await deleteData(url, product, setAllProducts, ["id"], navigate);
+      let url = `http://localhost:3000/store`;
+      await editData(
+        url,
+        { ...product, quantity: 0 },
+        setAllProducts,
+        ["id"],
+        navigate
+      );
     } catch (error) {
       console.error("Error deleting product:", error);
     }

@@ -54,20 +54,20 @@ router.put("/:userId", (req, res) => {
     });
 });
 
-router.delete("/product/:productId", (req, res) => {
-  const query = `DELETE from cart_products WHERE productId = ?`;
-  const values = [req.params.productId];
+// router.delete("/product/:productId", (req, res) => {
+//   const query = `DELETE from cart_products WHERE productId = ?`;
+//   const values = [req.params.productId];
 
-  req
-    .sqlConnect(query, values)
-    .then(() => {
-      res.status(200).json({ message: "Cart Product deleted successfully" });
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("An error occurred");
-    });
-});
+//   req
+//     .sqlConnect(query, values)
+//     .then(() => {
+//       res.status(200).json({ message: "Cart Product deleted successfully" });
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//       res.status(500).send("An error occurred");
+//     });
+// });
 
 router.delete("/user/:userId", (req, res) => {
   const query = `DELETE from cart_products WHERE userId = ?`;

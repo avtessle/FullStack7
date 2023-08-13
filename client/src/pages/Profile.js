@@ -19,23 +19,19 @@ function Profile({ soldProducts }) {
   };
 
   soldProducts.forEach((product) => {
-    if (!groupedProducts[product.purchaseId]) {
-      groupedProducts[product.purchaseId] = [];
-    }
+    if (product.userId === user.id) {
+      if (!groupedProducts[product.purchaseId]) {
+        groupedProducts[product.purchaseId] = [];
+      }
 
-    const correspondingProduct = allProducts.find(
-      (p) => p.id === product.productId
-    );
+      const correspondingProduct = allProducts.find(
+        (p) => p.id === product.productId
+      );
 
-    if (correspondingProduct) {
       groupedProducts[product.purchaseId].push({
         ...product,
         description: correspondingProduct.description,
       });
-    } else {
-      console.warn(
-        `Product with ID ${product.productId} not found in allProducts.`
-      );
     }
   });
 
@@ -54,7 +50,14 @@ function Profile({ soldProducts }) {
             <h2 className={styles.soldProductsTitle}>Shopping history</h2>
             {Object.keys(groupedProducts).map((purchaseId) => (
               <div key={purchaseId} className={styles.purchaseContainer}>
-                <h3 className={styles.purchaseTitle}>Purchase: {purchaseId}</h3>
+                <h3 className={styles.purchaseTitle}>Purchase {purchaseId}</h3>
+                <h4>
+                  {
+                    new Date(groupedProducts[purchaseId][0].date)
+                      .toISOString()
+                      .split("T")[0]
+                  }
+                </h4>
                 <ul className={styles.productList}>
                   {groupedProducts[purchaseId].map((product, index) => (
                     <li key={index} className={styles.productItem}>

@@ -87,13 +87,16 @@ function Cart({ soldProducts, setSoldProducts }) {
 
     //add to soldProducts
     url = `http://localhost:3000/purchases/${user.id}`;
+    let date = new Date();
     cartProducts.forEach((product) => {
-      addData(
-        url,
-        { ...product },
-        setSoldProducts,
-        navigate
-      );
+      let soldProduct = {
+        purchaseId: user.purchases + 1,
+        productId: product.productId,
+        userId: product.userId,
+        date: date,
+        quantity: product.quantity,
+      };
+      addData(url, soldProduct, setSoldProducts, navigate);
     });
 
     //update user purchases count
