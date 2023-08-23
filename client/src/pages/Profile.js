@@ -7,7 +7,15 @@ function Profile({ soldProducts }) {
   const isManager = user.status === "admin";
   const groupedProducts = {};
 
-  const sortedSoldProducts = [...soldProducts].sort(
+  const sortedSoldProducts = {};
+  for (const product of soldProducts) {
+    if (sortedSoldProducts[product.productId]) {
+      sortedSoldProducts[product.productId].quantity += product.quantity;
+    } else {
+      sortedSoldProducts[product.productId] = { ...product };
+    }
+  }
+  const sortedSoldProductsArray = Object.values(sortedSoldProducts).sort(
     (a, b) => b.quantity - a.quantity
   );
 
@@ -80,13 +88,17 @@ function Profile({ soldProducts }) {
         )}
 
         {isManager && (
-          <div>
+          <div className={styles.bestSellersContainer}>
             <h2 className={styles.soldProductsTitle}>Best Sellers</h2>
-            <ul>
-              {sortedSoldProducts.map((product) => (
-                <li key={product.id}>
-                  {getProductDescription(product.productId)} - Quantity:{" "}
-                  {product.quantity}
+            <ul className={styles.soldProductsList}>
+              {sortedSoldProductsArray.map((product) => (
+                <li key={product.purchaseId} className={styles.soldProductItem}>
+                  <span className={styles.productDescription}>
+                    {getProductDescription(product.productId)}
+                  </span>
+                  <span className={styles.productQuantity}>
+                    Quantity: {product.quantity}
+                  </span>
                 </li>
               ))}
             </ul>

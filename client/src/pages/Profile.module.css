@@ -64,3 +64,61 @@
   color: #666;
   margin: 0;
 }
+
+.bestSellersContainer {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-top: 20px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.soldProductsTitle {
+  font-size: 30px;
+  margin-bottom: 15px;
+}
+
+.soldProductsList {
+  list-style: none;
+  padding: 0;
+}
+
+.soldProductItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.productDescription {
+  font-weight: bold;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+
+.productQuantity {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  color: #888;
+  margin-right: 30px;
+}
+
+@media (max-width: 1250px) {
+  .userProfile {
+    margin: 50px 0;
+    background-color: rgba(255, 255, 255, 0.39);
+    padding: 20px 50px;
+    padding-bottom: 0;
+  }
+  .userProfile h1 {
+    color: black;
+    font-size: 40px;
+  }
+
+  .userProfile * {
+    color: black;
+    font-size: 25px;
+  }
+}

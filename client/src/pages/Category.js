@@ -84,7 +84,6 @@ function Category() {
   };
 
   const addProductToStore = async (product) => {
-    console.log(product);
     const description = product.description;
     const similarProduct = jewelry.find(
       (product) => product.description === description
@@ -114,8 +113,6 @@ function Category() {
       url = `http://localhost:3000/store`;
 
       addData(url, newProduct, setAllProducts, navigate);
-      console.log(jewelry);
-      console.log(allProducts);
     }
   };
 
@@ -124,14 +121,6 @@ function Category() {
   return (
     <div className={styles["category-container"]}>
       <h2 className={styles["category-heading"]}>{category}</h2>
-      {isManager && (
-        <button
-          className={styles["add-button"]}
-          onClick={() => setIsPopupOpen(true)}
-        >
-          Add {category}
-        </button>
-      )}
       <ul className={styles["category-list"]}>
         {jewelry.map((item) => (
           <li key={item.id} className={styles["category-item"]}>
@@ -152,19 +141,29 @@ function Category() {
                   Delete
                 </button>
               )}
-              <button
-                className={`${styles["add-to-cart-button"]} ${
-                  item.quantity === 0 ? styles["disabled-button"] : ""
-                }`}
-                onClick={() => addToCart(item)}
-                disabled={item.quantity === 0}
-              >
-                Add to cart
-              </button>
+              {!isManager && (
+                <button
+                  className={`${styles["add-to-cart-button"]} ${
+                    item.quantity === 0 ? styles["disabled-button"] : ""
+                  }`}
+                  onClick={() => addToCart(item)}
+                  disabled={item.quantity === 0}
+                >
+                  Add to cart
+                </button>
+              )}
             </div>
           </li>
         ))}
       </ul>
+      {isManager && (
+        <button
+          className={styles["add-button"]}
+          onClick={() => setIsPopupOpen(true)}
+        >
+          Add {category}
+        </button>
+      )}
       <AddProductPopup
         isOpen={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}

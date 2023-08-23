@@ -1,13 +1,14 @@
 import React, { useState } from "react";
+import styles from "./AddProductPopup.module.css";
 
 function AddProductPopup({ isOpen, onClose, onAddProduct, category }) {
   const [newProductData, setNewProductData] = useState({
-    category: category.substring(0, category.length - 1), 
+    category: category.substring(0, category.length - 1),
     description: "",
     price: 0,
     quantity: 0,
-    image:""
-  }) ;
+    image: "",
+  });
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -20,13 +21,14 @@ function AddProductPopup({ isOpen, onClose, onAddProduct, category }) {
   const handleAddProduct = () => {
     // Call the provided onAddProduct function with the productData
     onAddProduct(newProductData);
+
     // Clear the form and close the popup
     setNewProductData({
-      category: category.substring(0, category.length - 1), 
-    description: "",
-    price: 0,
-    quantity: 0,
-    image:""
+      category: category.substring(0, category.length - 1),
+      description: "",
+      price: 0,
+      quantity: 0,
+      image: "",
     });
     onClose();
   };
@@ -36,9 +38,8 @@ function AddProductPopup({ isOpen, onClose, onAddProduct, category }) {
   }
 
   return (
-    <div className="popup-overlay">
-      <div className="popup">
-        {/* Form to add product data */}
+    <div className={styles["popup-overlay"]}>
+      <div className={styles.popup}>
         <input
           type="text"
           name="description"
@@ -60,7 +61,7 @@ function AddProductPopup({ isOpen, onClose, onAddProduct, category }) {
           value={newProductData.quantity}
           onChange={handleInputChange}
         />
-         <input
+        <input
           type="text"
           name="image"
           placeholder="Image"
@@ -71,6 +72,41 @@ function AddProductPopup({ isOpen, onClose, onAddProduct, category }) {
         <button onClick={onClose}>Cancel</button>
       </div>
     </div>
+
+    // <div className="popup-overlay">
+    //   <div className="popup">
+    //     <input
+    //       type="text"
+    //       name="description"
+    //       placeholder="Description"
+    //       value={newProductData.description}
+    //       onChange={handleInputChange}
+    //     />
+    //     <input
+    //       type="number"
+    //       name="price"
+    //       placeholder="Price"
+    //       value={newProductData.price}
+    //       onChange={handleInputChange}
+    //     />
+    //     <input
+    //       type="number"
+    //       name="quantity"
+    //       placeholder="Quantity"
+    //       value={newProductData.quantity}
+    //       onChange={handleInputChange}
+    //     />
+    //     <input
+    //       type="text"
+    //       name="image"
+    //       placeholder="Image URL"
+    //       value={newProductData.image}
+    //       onChange={handleInputChange}
+    //     />
+    //     <button onClick={handleAddProduct}>Add Product</button>
+    //     <button onClick={onClose}>Cancel</button>
+    //   </div>
+    // </div>
   );
 }
 

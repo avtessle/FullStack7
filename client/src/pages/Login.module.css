@@ -81,3 +81,10 @@
 .btn-link:hover {
   background-color: rgba(249, 246, 197, 0.489);
 }
+
+@media (max-width: 1024px) {
+  .form {
+    margin-right: 0;
+    padding: 10px;
+  }
+}

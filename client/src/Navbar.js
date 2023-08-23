@@ -28,16 +28,24 @@ function Navbar() {
             {category.charAt(0).toUpperCase() + category.slice(1)}
           </NavLink>
         ))}
-        <NavLink to="/profile">
-          <img
-            src={profileImage}
-            alt="profile image"
-            className={styles.iconImage}
-          />
-        </NavLink>
-        {!isManager&& (<NavLink to="/cart">
-          <img src={cartImage} alt="cart image" className={styles.iconImage} />
-        </NavLink>)}
+        <div className={styles["icons-div"]}>
+          <NavLink to="/profile">
+            <img
+              src={profileImage}
+              alt="profile image"
+              className={styles.iconImage}
+            />
+          </NavLink>
+          {!isManager && (
+            <NavLink to="/cart">
+              <img
+                src={cartImage}
+                alt="cart image"
+                className={styles.iconImage}
+              />
+            </NavLink>
+          )}
+        </div>
       </nav>
       <Outlet />
     </>

@@ -94,3 +94,10 @@
   height: 100px;
   width: 100px;
 }
+
+@media (max-width: 1000px) {
+  .cart-list {
+    display: flex;
+    flex-direction: column;
+  }
+}
