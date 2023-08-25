@@ -14,6 +14,7 @@ function Store({ soldProducts, setSoldProducts }) {
   const user = JSON.parse(localStorage.getItem("currentUser"));
 
   useEffect(() => {
+    //check if in local storage and if not fetch it and saves it
     const fetchData = async (url, setData, storageKey) => {
       const savedData = localStorage.getItem(storageKey);
 

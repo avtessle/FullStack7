@@ -14,6 +14,8 @@ function Cart({ soldProducts, setSoldProducts }) {
   const [isCheckout, setIsCheckout] = useState(false);
 
   let user = JSON.parse(localStorage.getItem("currentUser"));
+
+  //calculate total cart price
   const totalPrice = cartProducts.reduce((total, product) => {
     return total + parseFloat(product.price) * product.quantity;
   }, 0);
@@ -31,6 +33,7 @@ function Cart({ soldProducts, setSoldProducts }) {
   }, [soldProducts]);
 
   useEffect(() => {
+    //check if it's possible to checkout
     const soldOutOrNotEnough = cartProducts.some((item) => {
       const product = allProducts.find((prod) => prod.id === item.productId);
       return product.quantity === 0 || item.quantity > product.quantity;
@@ -42,6 +45,7 @@ function Cart({ soldProducts, setSoldProducts }) {
   const removeFromCart = (product) => {
     let url = `http://localhost:3000/cart/${user.id}`;
 
+    //if quantity in cart>1
     if (product.quantity > 1) {
       let updatedProduct = {
         ...product,
@@ -61,20 +65,16 @@ function Cart({ soldProducts, setSoldProducts }) {
   };
 
   const checkout = () => {
-    //quantity-=1 in allProducts
     let url = `http://localhost:3000/store`;
-    const cartProductIds = new Set(
-      cartProducts.map((product) => product.productId)
-    );
 
+    //quantity-=1 in allProducts
     allProducts.forEach((product) => {
-      if (cartProductIds.has(product.id)) {
-        const cartProduct = cartProducts.find(
-          (cartProduct) => cartProduct.productId === product.id
-        );
-
+      const cartProduct = cartProducts.find(
+        (cartProduct) => cartProduct.productId === product.id
+      );
+      //the matching product in allProducts
+      if (cartProduct) {
         const updatedQuantity = product.quantity - cartProduct.quantity;
-
         editData(
           url,
           { ...product, quantity: updatedQuantity },
@@ -140,7 +140,9 @@ function Cart({ soldProducts, setSoldProducts }) {
                     <p>{item.description}</p>
                     <p>{item.price}$</p>
                     <p>Quantity: {item.quantity}</p>
-                    {isSoldOut && <p>Sold Out</p>}
+                    {isSoldOut && (
+                      <p className={styles["sold-out"]}>Sold Out</p>
+                    )}
                     {notEnough && !isSoldOut && (
                       <p className={styles["sold-out"]}>
                         Cannot be purchased in this quantity

@@ -71,6 +71,7 @@ function AddProductPopup({
           placeholder="Description"
           value={newProductData.description}
           onChange={handleInputChange}
+          disabled={popupMode === "edit"}
           required
         />
         <input
@@ -87,6 +88,7 @@ function AddProductPopup({
           placeholder="Quantity"
           value={popupMode === "edit" ? newProductData.quantity : null}
           onChange={handleInputChange}
+          required
         />
         <input
           type="text"
@@ -94,6 +96,7 @@ function AddProductPopup({
           placeholder="Image"
           value={newProductData.image}
           onChange={handleInputChange}
+          required
         />
         {!isFormValid && (
           <div className={styles.errorMessage}>

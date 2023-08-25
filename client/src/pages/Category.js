@@ -11,8 +11,8 @@ function Category() {
   const { category } = useParams();
   const { cartProducts, setCartProducts } = useCart();
   const { allProducts, setAllProducts } = useProducts();
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [jewelry, setJewelry] = useState([]);
   const [popupMode, setPopupMode] = useState("");
   const [editProductData, setEditProductData] = useState(null);
@@ -33,22 +33,25 @@ function Category() {
   }, [category, allProducts]);
 
   const addToCart = (product) => {
-    const description = product.description;
-    const similarProduct = cartProducts.find(
-      (product) => product.description === description
-    );
-
     const url = `http://localhost:3000/cart/${user.id}`;
     let updatedProduct;
 
+    //search product in cart
+    const productId = product.id;
+    const similarProduct = cartProducts.find(
+      (product) => product.productId === productId
+    );
+
+    //already exists in cart: quantity + 1
     if (similarProduct) {
       updatedProduct = {
         ...similarProduct,
         quantity: similarProduct.quantity + 1,
       };
 
+      //if quantity is more than available
       const inStoreProduct = jewelry.find(
-        (product) => product.description === description
+        (product) => product.id === productId
       );
       if (updatedProduct.quantity > inStoreProduct.quantity) {
         alert("You have already reached the maximum amount!");
@@ -56,6 +59,7 @@ function Category() {
         editData(url, updatedProduct, setCartProducts, "productId", navigate);
       }
     } else {
+      //not in cart- add as new product
       updatedProduct = {
         productId: product.id,
         userId: user.id,
@@ -65,7 +69,6 @@ function Category() {
         price: product.price,
         image: product.image,
       };
-
       addData(url, updatedProduct, setCartProducts, navigate);
     }
   };
@@ -87,10 +90,10 @@ function Category() {
   };
 
   const addProductToStore = async (product) => {
-    const similarProduct = jewelry.find(
-      (p) => p.description === product.description
-    );
+    const similarProduct = jewelry.find((p) => p.id === product.id);
+
     if (similarProduct) {
+      //product already exists
       alert("This product already exists!");
     } else {
       const url = `http://localhost:3000/store`;
@@ -99,16 +102,8 @@ function Category() {
   };
 
   const EditProductInStore = async (product) => {
-    const similarProduct = jewelry.find(
-      (p) => p.description === product.description
-    );
-    if (!similarProduct) {
-      alert("This product doesn't exists!");
-    } else {
-      let url = `http://localhost:3000/store/manager`;
-      let updatedProduct = { id: similarProduct.id, ...product };
-      editData(url, updatedProduct, setAllProducts, "id", navigate);
-    }
+    let url = `http://localhost:3000/store/manager`;
+    editData(url, product, setAllProducts, "id", navigate);
   };
 
   const isManager = user.status === "admin";

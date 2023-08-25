@@ -4,8 +4,8 @@ function Profile({ soldProducts }) {
   const user = JSON.parse(localStorage.getItem("currentUser"));
   const allProducts = JSON.parse(localStorage.getItem("allProducts"));
   const isManager = user.status === "admin";
-  const groupedProducts = {};
 
+  //create a list of sorted sold products- for manager
   const sortedSoldProducts = {};
   for (const product of soldProducts) {
     if (sortedSoldProducts[product.productId]) {
@@ -18,6 +18,7 @@ function Profile({ soldProducts }) {
     (a, b) => b.quantity - a.quantity
   );
 
+  //get description of the sold product
   const getProductDescription = (productId) => {
     const product = allProducts.find((p) => p.id === productId);
     return product
@@ -25,6 +26,8 @@ function Profile({ soldProducts }) {
       : console.warn(`Product with ID not found in allProducts.`);
   };
 
+  //create a list of grouped sold products of user- for user
+  const groupedProducts = {};
   soldProducts.forEach((product) => {
     if (product.userId === user.id) {
       if (!groupedProducts[product.purchaseId]) {
