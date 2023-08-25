@@ -1,7 +1,6 @@
 import styles from "./Profile.module.css";
 
 function Profile({ soldProducts }) {
-  console.log(soldProducts);
   const user = JSON.parse(localStorage.getItem("currentUser"));
   const allProducts = JSON.parse(localStorage.getItem("allProducts"));
   const isManager = user.status === "admin";
@@ -93,10 +92,10 @@ function Profile({ soldProducts }) {
             <ul className={styles.soldProductsList}>
               {sortedSoldProductsArray.map((product) => (
                 <li key={product.purchaseId} className={styles.soldProductItem}>
-                  <span className={styles.productDescription}>
+                  <span className={styles.productDescriptionM}>
                     {getProductDescription(product.productId)}
                   </span>
-                  <span className={styles.productQuantity}>
+                  <span className={styles.productQuantityM}>
                     Quantity: {product.quantity}
                   </span>
                 </li>

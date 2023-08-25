@@ -92,13 +92,13 @@
   border-bottom: 1px solid #e0e0e0;
 }
 
-.productDescription {
+.productDescriptionM {
   font-weight: bold;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
 }
 
-.productQuantity {
+.productQuantityM {
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
   color: #888;

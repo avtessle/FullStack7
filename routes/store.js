@@ -31,15 +31,42 @@ router.put("/", (req, res) => {
     });
 });
 
-router.post("/", (req, res) => {
+router.put("/manager", (req, res) => {
   const product = req.body;
-  const query = `INSERT INTO products (category, description, price, quantity, image) VALUES (?,?, ?,?, ?)`;
-  const values = [product.category, product.description, product.price,product.quantity, product.image];
+  const query = `UPDATE products SET quantity = ?, price = ?, image=? WHERE id = ?`;
+  const values = [product.quantity, product.price, product.image, product.id];
 
   req
     .sqlConnect(query, values)
     .then(() => {
       res.status(200).json(product);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("An error occurred");
+    });
+});
+
+router.post("/", (req, res) => {
+  const product = req.body;
+  const query = `INSERT INTO products (category, description, price, quantity, image) VALUES (?,?, ?,?, ?)`;
+  const values = [
+    product.category,
+    product.description,
+    product.price,
+    product.quantity,
+    product.image,
+  ];
+
+  req
+    .sqlConnect(query, values)
+    .then((result) => {
+      const insertedId = result.insertId;
+      const productWithId = {
+        ...product,
+        id: insertedId,
+      };
+      res.status(200).json(productWithId);
     })
     .catch((err) => {
       console.error(err);

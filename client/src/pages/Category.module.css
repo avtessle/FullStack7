@@ -65,7 +65,7 @@
 }
 
 .add-to-cart-button,
-.delete-button {
+.manager-buttons button {
   cursor: pointer;
   padding: 8px 12px;
   border: none;
@@ -90,10 +90,8 @@
   cursor: not-allowed;
 }
 
-.delete-button {
-  background-color: beige;
-  color: black;
-  font-size: 10px;
+.manager-buttons {
+  display: flex;
 }
 
 .add-button {

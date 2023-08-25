@@ -13,8 +13,11 @@ function Category() {
   const { allProducts, setAllProducts } = useProducts();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  const user = JSON.parse(localStorage.getItem("currentUser"));
   const [jewelry, setJewelry] = useState([]);
+  const [popupMode, setPopupMode] = useState("");
+  const [editProductData, setEditProductData] = useState(null);
+
+  const user = JSON.parse(localStorage.getItem("currentUser"));
 
   useEffect(() => {
     localStorage.setItem("allProducts", JSON.stringify(allProducts));
@@ -84,35 +87,27 @@ function Category() {
   };
 
   const addProductToStore = async (product) => {
-    const description = product.description;
     const similarProduct = jewelry.find(
-      (product) => product.description === description
+      (p) => p.description === product.description
     );
-
-    let url;
-    let updatedProduct;
-    let newProduct;
-
     if (similarProduct) {
-      updatedProduct = {
-        ...similarProduct,
-        quantity: similarProduct.quantity + 1,
-      };
-      url = `http://localhost:3000/store/${product.id}`;
-      editData(url, updatedProduct, setAllProducts, "id", navigate);
+      alert("This product already exists!");
     } else {
-      newProduct = {
-        productId: product.id,
-        userId: user.id,
-        quantity: 1,
-        category: product.category,
-        description: product.description,
-        price: product.price,
-        image: product.image,
-      };
-      url = `http://localhost:3000/store`;
+      const url = `http://localhost:3000/store`;
+      addData(url, product, setAllProducts, navigate);
+    }
+  };
 
-      addData(url, newProduct, setAllProducts, navigate);
+  const EditProductInStore = async (product) => {
+    const similarProduct = jewelry.find(
+      (p) => p.description === product.description
+    );
+    if (!similarProduct) {
+      alert("This product doesn't exists!");
+    } else {
+      let url = `http://localhost:3000/store/manager`;
+      let updatedProduct = { id: similarProduct.id, ...product };
+      editData(url, updatedProduct, setAllProducts, "id", navigate);
     }
   };
 
@@ -131,15 +126,25 @@ function Category() {
             />
             <div className={styles["category-title"]}>{item.description}</div>
             <div>{item.price}$</div>
-            <div>{item.quantity} left</div>
+            <div>
+              {item.quantity === 0 ? "Sold Out" : `${item.quantity} left`}
+            </div>
             <div className={styles["button-group"]}>
               {isManager && (
-                <button
-                  className={styles["delete-button"]}
-                  onClick={() => deleteProductFromStore(item)}
-                >
-                  Delete
-                </button>
+                <div className={styles["manager-buttons"]}>
+                  <button onClick={() => deleteProductFromStore(item)}>
+                    Delete
+                  </button>
+                  <button
+                    onClick={() => {
+                      setPopupMode("edit");
+                      setEditProductData(item);
+                      setIsPopupOpen(true);
+                    }}
+                  >
+                    Edit
+                  </button>
+                </div>
               )}
               {!isManager && (
                 <button
@@ -159,16 +164,25 @@ function Category() {
       {isManager && (
         <button
           className={styles["add-button"]}
-          onClick={() => setIsPopupOpen(true)}
+          onClick={() => {
+            setPopupMode("add");
+            setIsPopupOpen(true);
+          }}
         >
           Add {category}
         </button>
       )}
       <AddProductPopup
         isOpen={isPopupOpen}
-        onClose={() => setIsPopupOpen(false)}
+        onClose={() => {
+          setIsPopupOpen(false);
+          setEditProductData(null);
+        }}
         onAddProduct={addProductToStore}
+        onEditProduct={EditProductInStore}
         category={category}
+        popupMode={popupMode}
+        editProductData={editProductData}
       />
     </div>
   );
