@@ -11,7 +11,10 @@ function Profile({ soldProducts }) {
     if (sortedSoldProducts[product.productId]) {
       sortedSoldProducts[product.productId].quantity += product.quantity;
     } else {
-      sortedSoldProducts[product.productId] = { ...product };
+      sortedSoldProducts[product.productId] = {
+        productId: product.productId,
+        quantity: product.quantity,
+      };
     }
   }
   const sortedSoldProductsArray = Object.values(sortedSoldProducts).sort(
@@ -94,7 +97,7 @@ function Profile({ soldProducts }) {
             <h2 className={styles.soldProductsTitle}>Best Sellers</h2>
             <ul className={styles.soldProductsList}>
               {sortedSoldProductsArray.map((product) => (
-                <li key={product.purchaseId} className={styles.soldProductItem}>
+                <li key={product.productId} className={styles.soldProductItem}>
                   <span className={styles.productDescriptionM}>
                     {getProductDescription(product.productId)}
                   </span>

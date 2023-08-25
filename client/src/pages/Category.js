@@ -9,6 +9,11 @@ import styles from "./Category.module.css";
 function Category() {
   const navigate = useNavigate();
   const { category } = useParams();
+  const categories = ["necklaces", "earrings", "bracelets", "rings"];
+  if (!categories.includes(category)) {
+    navigate("/error");
+  }
+
   const { cartProducts, setCartProducts } = useCart();
   const { allProducts, setAllProducts } = useProducts();
 
