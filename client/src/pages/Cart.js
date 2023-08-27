@@ -105,7 +105,7 @@ function Cart({ soldProducts, setSoldProducts }) {
       url,
       { ...user, purchases: user.purchases + 1 },
       null,
-      ["id"],
+      "id",
       navigate
     );
     user.purchases = user.purchases + 1;

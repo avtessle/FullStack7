@@ -9,10 +9,13 @@ import styles from "./Category.module.css";
 function Category() {
   const navigate = useNavigate();
   const { category } = useParams();
-  const categories = ["necklaces", "earrings", "bracelets", "rings"];
-  if (!categories.includes(category)) {
-    navigate("/error");
-  }
+  //const categories = ["necklaces", "earrings", "bracelets", "rings"];
+
+  // useEffect(() => {
+  //   if (!categories.includes(category)) {
+  //     navigate("/error");
+  //   }
+  // }, [category, categories, navigate]);
 
   const { cartProducts, setCartProducts } = useCart();
   const { allProducts, setAllProducts } = useProducts();
@@ -86,7 +89,7 @@ function Category() {
         url,
         { ...product, quantity: 0 },
         setAllProducts,
-        ["id"],
+        "id",
         navigate
       );
     } catch (error) {
